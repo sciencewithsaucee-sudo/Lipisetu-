@@ -10,15 +10,19 @@
     <!-- Encapsulated ShlokaAI-based Styles -->
     <style>
   html, body {
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* prevent internal scrolling */
+    overflow-x: hidden;   /* hide horizontal scroll only */
+    overflow-y: auto;     /* allow vertical scrolling */
+    box-sizing: border-box;
   }
 
   main, #app, .container {
-    height: 100%;
-    overflow: auto; /* allow internal components to scroll normally if needed */
+    min-height: 100vh;
+    width: 100%;
+    overflow: visible;
   }
     </style>
     <style>
