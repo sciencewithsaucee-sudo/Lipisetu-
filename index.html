@@ -9,22 +9,6 @@
     
     <!-- Encapsulated ShlokaAI-based Styles -->
     <style>
-  html, body {
-    height: auto !important;
-    min-height: 100% !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  #app, main, .container {
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-  }
-    </style>
-    <style>
         /* * ===================================================================
          * CSS ENCAPSULATION
          * All rules are prefixed with #lipisetu-app-container to prevent
@@ -33,12 +17,12 @@
          */
 
         /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
-        
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-              }
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
         /* --- END FIX --- */
 
         
