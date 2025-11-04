@@ -8,7 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- Encapsulated ShlokaAI-based Styles -->
-    
+    <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* prevent internal scrolling */
+  }
+
+  main, #app, .container {
+    height: 100%;
+    overflow: auto; /* allow internal components to scroll normally if needed */
+  }
+    </style>
     <style>
         /* * ===================================================================
          * CSS ENCAPSULATION
@@ -18,13 +30,7 @@
          */
 
         /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
-        body {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  background-color: #fafafa; /* or whatever your theme uses */
-}
+        
         html, body {
             margin: 0;
             padding: 0;
