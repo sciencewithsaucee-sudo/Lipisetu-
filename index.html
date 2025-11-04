@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lipisetu – Research Edition (Transliteration & Analysis)</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Encapsulated ShlokaAI-based Styles -->
+    <style>
+        /* * ===================================================================
+         * CSS ENCAPSULATION
+         * All rules are prefixed with #lipisetu-app-container to prevent
+         * conflicts with the parent website's theme (e.g., header/footer).
+         * ===================================================================
+         */
+        
+        #lipisetu-app-container {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            color: #374151; /* var(--color-text-body) */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.65;
+            /* REMOVED max-width: 1000px; for full-width design */
+            margin: 0 auto;
+            width: 100%;
+         }
+        
+        /* Stop prefixing here, apply to all children */
+        #lipisetu-app-container *, 
+        #lipisetu-app-container *::before, 
+        #lipisetu-app-container *::after { 
+            box-sizing: border-box; 
+        }
+
+        :root {
+            /* Keep CSS variables defined, but they are localized by the container */
+            --color-primary: #006400; /* Dark Green (from ShlokaAI) */
+            --color-primary-dark: #004d00;
+            --color-secondary: #1E40AF; /* Blue (from ShlokaAI) */
+            --color-secondary-dark: #1e3a8a; /* Darker blue */
+            --color-danger: #B91C1C; /* Red (from ShlokaAI) */
+            --color-danger-dark: #991B1B; /* Darker red */
+            --color-neutral: #6B7280; /* Medium Gray (from ShlokaAI) */
+            --color-neutral-dark: #4B5563;
+            --color-text-dark: #111827; /* Near Black */
+            --color-text-body: #374151; /* Dark Gray */
+            --color-text-light: #6B7280; /* Medium Gray */
+            --color-bg-light: #f9fafb; /* Very Light Gray */
+            --color-bg-white: #ffffff;
+            --color-border: #e5e7eb; /* Light Gray Border */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            /* Specific to Lipisetu log */
+            --log-bg: #FFF3E0; 
+            --log-border: #FFCC80;
+        }
+
+        /* --- NEW Hero Section --- */
+        #lipisetu-app-container .hero-section {
+            display: flex; align-items: center; text-align: center;
+            padding: 3rem 1rem;
+            background-color: #e8f5e9; /* Light green */
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+            position: relative; /* For version label */
+           }
+        
+        /* NEW: Version Label */
+         #lipisetu-app-container .version-label {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             background-color: rgba(0, 100, 0, 0.1);
+             color: var(--color-primary-dark);
+             font-size: 0.75rem;
+             font-weight: 600;
+             padding: 3px 8px;
+             border-radius: var(--radius-md);
+             border: 1px solid rgba(0, 100, 0, 0.2);
+           }
+        
+         #lipisetu-app-container .hero-content {
+             max-width: 800px;
+             margin: 0 auto;
+             padding: 0 1rem;
+           }
+         #lipisetu-app-container .hero-content h1 {
+             font-size: clamp(2rem, 5vw, 2.8rem);
+             color: var(--color-text-dark);
+             font-weight: 700; margin: 0 0 1rem 0; line-height: 1.25;
+             border: none; padding: 0;
+           }
+         #lipisetu-app-container .hero-content p {
+             font-size: 1.15rem; font-weight: 400; color: var(--color-text-body);
+             margin: 0 0 1.75rem 0;
+           }
+         #lipisetu-app-container .hero-buttons {
+             display: flex;
+             gap: 1rem;
+             justify-content: center;
+             flex-wrap: wrap;
+           }
+
+        /* --- 3️⃣ CSS FIX: "How to Use" Button Style --- */
+        #lipisetu-app-container button.how-to-use-btn,
+        #lipisetu-app-container #howToUseBtn {
+          background-color: #ffffff !important;
+          color: #006400 !important;
+          border: 2px solid #006400 !important;
+          font-weight: 600;
+          padding: 8px 16px;
+          border-radius: 6px;
+          transition: all 0.2s ease-in-out;
+          /* Ensure btn defaults are overridden if needed */
+          max-width: 250px;
+          flex-grow: 1;
+        }
+        #lipisetu-app-container button.how-to-use-btn:hover,
+        #lipisetu-app-container #howToUseBtn:hover {
+          background-color: #006400 !important;
+          color: #ffffff !important;
+        }
+        
+        /* --- NEW Mobile Toggle Buttons --- */
+        #lipisetu-app-container .mobile-toggle-buttons {
+            display: none; /* Hidden by default on desktop */
+            width: 100%;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+        #lipisetu-app-container .mobile-toggle-buttons .btn {
+            flex-grow: 1;
+            max-width: 50%;
+        }
+        
+        /* --- NEW Tool Grid Layout --- */
+        #lipisetu-app-container .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile-first: single column */
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* On screens 900px and wider, use a 2-column layout */
+        @media (min-width: 900px) { 
+            #lipisetu-app-container .tool-grid {
+                /* Give more space to the main transliteration tool */
+                grid-template-columns: 1.2fr 0.8fr; 
+            }
+        }
+
+        /* --- NEW Mobile Stacking/Toggling Logic --- */
+        @media (max-width: 899px) {
+            /* Show the toggle buttons */
+            #lipisetu-app-container .mobile-toggle-buttons {
+                display: flex;
+            }
+            
+            /* Hide the grid margin, buttons have it */
+            #lipisetu-app-container .tool-grid {
+                margin-top: 1rem;
+            }
+        
+            /* Hide Sandhi column by default on mobile */
+            #lipisetu-app-container #sandhi-column {
+                display: none;
+            }
+        }
+        
+        #lipisetu-app-container .tool-column .card {
+            margin-top: 0; /* Grid gap handles spacing */
+            height: 100%; /* Make cards in grid equal height */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #lipisetu-app-container .tool-column .card-body {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Make card body fill height */
+        }
+        
+        /* Card Layout */
+        #lipisetu-app-container .card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-top: 1.5rem;
+        }
+        #lipisetu-app-container .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        /* Make tool headers smaller */
+        #lipisetu-app-container .card-header h2 {
+            font-size: 1.5rem;
+            color: var(--color-text-dark);
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.25;
+            text-align: left;
+            border: none;
+            padding: 0;
+        }
+        #lipisetu-app-container .card-header p {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--color-text-light);
+            margin: 0;
+            text-align: left;
+            margin-top: 5px;
+        }
+        #lipisetu-app-container .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Form Elements */
+        #lipisetu-app-container textarea, 
+        #lipisetu-app-container #outputText {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 1rem; /* Normalized font size */
+            box-sizing: border-box;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        #lipisetu-app-container textarea:focus, 
+        #lipisetu-app-container #outputText:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(0,100,0,0.15);
+        }
+        
+        /* --- 4️⃣ Enhancement: Output Container & Floating Button --- */
+        #lipisetu-app-container #outputTextContainer {
+            position: relative;
+        }
+        #lipisetu-app-container #floatingCopyBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            max-width: 80px; /* override btn defaults */
+            flex-grow: 0;
+            background-color: var(--color-neutral);
+            border-color: var(--color-neutral);
+        }
+         #lipisetu-app-container #floatingCopyBtn:hover:not(:disabled) {
+            background-color: var(--color-neutral-dark);
+            border-color: var(--color-neutral-dark);
+           }
+        
+        #lipisetu-app-container #outputText {
+            background-color: #f1f1f1;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+        #lipisetu-app-container textarea {
+             background-color: white;
+             /* margin-bottom: 20px; <-- REMOVED, margin is on info box now */
+        }
+        
+        /* --- 5️⃣ NEW: English Warning Info Box --- */
+        #lipisetu-app-container #englishWarningBox {
+            display: none; /* Hidden by default */
+            font-size: 0.85rem;
+            color: var(--color-text-dark);
+            background-color: #FFFBEB; /* Light yellow */
+            border: 1px solid #FDE68A; /* Yellow border */
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+        #lipisetu-app-container #englishWarningBox strong {
+            color: #B45309; /* Dark yellow/brown */
+        }
+
+        /* --- NEW Label Group for Upload Button --- */
+        #lipisetu-app-container .label-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        #lipisetu-app-container .label-group label.area-label {
+            margin-bottom: 0; /* Remove bottom margin from label */
+        }
+        /* Style the upload button to be small and discrete */
+        #lipisetu-app-container .label-group #uploadButton {
+            flex-grow: 0; /* Don't grow */
+            max-width: none;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            /* Use secondary style for file operations */
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: #ffffff;
+        }
+        #lipisetu-app-container .label-group #uploadButton:hover:not(:disabled) {
+            background-color: var(--color-secondary-dark);
+            border-color: var(--color-secondary-dark);
+        }
+
+        #lipisetu-app-container label.area-label {
+            display: block;
+            font-weight: 500;
+            color: var(--color-text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Font Classes for Output */
+        #lipisetu-app-container .font-devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+        #lipisetu-app-container .font-telugu { font-family: 'Noto Sans Telugu', sans-serif; /* Specify Telugu font */ }
+        /* BLOGGER FIX: Use a classic serif font for IAST to improve diacritic rendering and copy-paste */
+        #lipisetu-app-container .font-iast { 
+            font-family: 'Times New Roman', Times, serif; 
+            font-size: 1.1rem; /* Make it slightly larger */
+        }
+
+        /* Button System */
+        #lipisetu-app-container .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+            flex-grow: 1; /* For button groups */
+            max-width: 250px; /* For button groups */
+        }
+        #lipisetu-app-container .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        #lipisetu-app-container .btn:disabled {
+            background: #D1D5DB; color: var(--color-text-light);
+            cursor: not-allowed; transform: none; box-shadow: none;
+        }
+        #lipisetu-app-container .btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: #ffffff; }
+        #lipisetu-app-container .btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); border-color: var(--color-primary-dark); }
+        #lipisetu-app-container .btn-secondary { background: var(--color-secondary); border-color: var(--color-secondary); color: #ffffff; }
+        #lipisetu-app-container .btn-secondary:hover:not(:disabled) { background: var(--color-secondary-dark); border-color: var(--color-secondary-dark); }
+        #lipisetu-app-container .btn-danger { background: var(--color-danger); border-color: var(--color-danger); color: #ffffff; }
+        #lipisetu-app-container .btn-danger:hover:not(:disabled) { background: var(--color-danger-dark); border-color: var(--color-danger-dark); }
+        #lipisetu-app-container .btn-neutral { background: var(--color-neutral); border-color: var(--color-neutral); color: #ffffff; }
+        #lipisetu-app-container .btn-neutral:hover:not(:disabled) { background: var(--color-neutral-dark); border-color: var(--color-neutral-dark); }
+        
+        #lipisetu-app-container .btn-outline {
+            background: var(--color-bg-white);
+            color: var(--color-primary); /* Green text for outline */
+            border-color: var(--color-primary); /* Green border */
+        }
+        #lipisetu-app-container .btn-outline:hover:not(:disabled) {
+            background: #f0fdf4; /* Light green hover */
+            border-color: var(--color-primary-dark);
+            color: var(--color-primary-dark);
+        }
+
+        #lipisetu-app-container .button-group { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Restyled Radio/Control Group */
+        #lipisetu-app-container .mode-control-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 20px;
+            padding: 1rem;
+            background-color: var(--color-bg-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        
+        @media (min-width: 768px) {
+             #lipisetu-app-container .mode-control-group {
+                  grid-template-columns: 1fr 1fr;
+                  gap: 2rem;
+                  padding: 1.5rem;
+             }
+        }
+        
+        /* On mobile, stack the controls */
+        @media (max-width: 480px) {
+             #lipisetu-app-container .mode-control-group {
+                  grid-template-columns: 1fr;
+             }
+        }
+
+
+        #lipisetu-app-container .control-label {
+            font-weight: 600;
+            color: var(--color-text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        #lipisetu-app-container .radio-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        #lipisetu-app-container .radio-label {
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+            color: var(--color-text-body);
+        }
+        #lipisetu-app-container .radio-label input {
+            margin-right: 8px;
+            accent-color: var(--color-primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* --- 2️⃣ Sandhi Panel (Upgraded) --- */
+        #lipisetu-app-container #sandhiResults {
+            font-size: 1.0rem; /* Slightly smaller */
+            font-weight: 500; /* Normal weight */
+            color: var(--color-text-dark);
+            min-height: 40px;
+            padding: 10px;
+            border: 1px dashed var(--color-neutral);
+            border-radius: var(--radius-md);
+            white-space: pre-wrap;
+            background-color: var(--color-bg-light);
+            /* Make it grow to fill space */
+            flex-grow: 1;
+        }
+        /* New styles for formatted Sandhi output */
+        #lipisetu-app-container #sandhiResults .sandhi-proposal {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+         #lipisetu-app-container #sandhiResults .sandhi-detail {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            display: block;
+            margin-top: 4px;
+           }
+        
+        #lipisetu-app-container #showSandhiLogBtn {
+            flex-grow: 0;
+            max-width: 250px; /* Widen to fit new text */
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        #lipisetu-app-container #sandhiLog {
+            margin-top: 10px;
+            border-top: 1px dashed var(--color-border);
+            padding-top: 10px;
+        }
+        #lipisetu-app-container #sandhiLog pre {
+            background-color: var(--color-bg-light);
+             border: 1px solid var(--color-border);
+             border-radius: var(--radius-md);
+             padding: 1rem;
+             overflow-x: auto;
+             font-family: monospace;
+             font-size: 0.85rem;
+             max-height: 150px;
+             overflow-y: auto;
+        }
+
+        
+        /* Make sandhi textarea also grow */
+        #lipisetu-app-container #sandhiInput {
+            flex-grow: 1;
+            min-height: 150px;
+        }
+
+        /* Log Panel */
+        #lipisetu-app-container #logPanel {
+            background-color: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+        }
+        #lipisetu-app-container #logPanel h3 {
+            color: var(--color-text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        #lipisetu-app-container #normalizationLog {
+            font-size: 0.85rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #34495E;
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: var(--color-bg-light);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        #lipisetu-app-container #normalizationLog li {
+            list-style-type: none;
+            margin-bottom: 3px;
+        }
+        
+        /* Message Box */
+        /* Positioned relative to viewport, so no prefix */
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-primary); /* Use theme color */
+            color: white;
+            padding: 12px 22px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1000;
+            font-weight: 500;
+        }
+        .message-box.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        #lipisetu-app-container .hidden {
+            display: none;
+        }
+
+        /* --- NEW Info Section Styles --- */
+         #lipisetu-app-container .info-card-body {
+             padding: 1.5rem;
+           }
+         #lipisetu-app-container .info-card-body h2 {
+             font-size: 1.5rem;
+             font-weight: 600;
+             color: var(--color-text-dark);
+             border-bottom: 1px solid var(--color-border);
+             padding-bottom: 0.75rem;
+             margin-top: 0;
+             margin-bottom: 1rem;
+           }
+         #lipisetu-app-container .info-card-body h3 {
+              font-size: 1.1rem;
+              font-weight: 600;
+              color: var(--color-text-dark);
+              border-bottom: none;
+              margin-top: 1.5rem;
+              margin-bottom: 0.5rem;
+           }
+         #lipisetu-app-container .info-card-body p, 
+         #lipisetu-app-container .info-card-body li {
+             font-size: 1rem;
+             line-height: 1.7;
+             color: var(--color-text-body);
+             word-break: break-word;
+           }
+         #lipisetu-app-container .info-card-body ol, 
+         #lipisetu-app-container .info-card-body ul {
+             padding-left: 1.5rem;
+             margin-left: 0;
+           }
+         #lipisetu-app-container .info-card-body li {
+             margin-bottom: 0.5rem;
+           }
+         #lipisetu-app-container .info-card-body a {
+             color: var(--color-primary);
+             text-decoration: none;
+             font-weight: 500;
+             transition: color 0.2s;
+           }
+         #lipisetu-app-container .info-card-body a:hover {
+             color: var(--color-primary-dark);
+             text-decoration: underline;
+           }
+         /* Code block for example */
+         #lipisetu-app-container pre {
+              background-color: var(--color-bg-light);
+              border: 1px solid var(--color-border);
+              border-radius: var(--radius-md);
+              padding: 1rem;
+              overflow-x: auto;
+              font-family: monospace;
+              font-size: 0.85rem;
+           }
+         #lipisetu-app-container .creator-info {
+             background-color: var(--color-bg-light);
+             padding: 1.5rem;
+             border-radius: var(--radius-md);
+             border: 1px solid var(--color-border);
+           }
+         #lipisetu-app-container .creator-info p {
+             margin: 0.5rem 0;
+           }
+
+    </style>
+</head>
+<body>
+    
+    <!-- 
+      ===============================================================
+      ENCAPSULATION WRAPPER
+      This div ensures no styles leak out to the parent theme.
+      ===============================================================
+    -->
+    <div id="lipisetu-app-container">
+
+        <!-- NEW Hero Section -->
+        <section class="hero-section">
+            <!-- UPDATE: Version Bump -->
+            <span class="version-label">v1.5 (Stable Engine)</span>
+            <div class="hero-content">
+                <h1>Lipisetu (लिपिसेतु)</h1>
+                <p>The Smart Sanskrit Transliteration & Analysis Tool. Instantly convert between IAST, Devanagari, and Telugu, analyze Sandhi, and process text files.</p>
+                <div class="hero-buttons">
+                    <a href="#lipisetu-tool-start" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+                        Get Started
+                    </a>
+                    <!-- 3️⃣ HTML FIX: Added id="howToUseBtn" -->
+                    <a href="#lipisetu-how-to-use" id="howToUseBtn" class="btn btn-outline">
+                        How to Use
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Container -->
+        <main class="main-container">
+        
+            <!-- NEW: Mobile-Only Toggle Buttons -->
+            <div class="mobile-toggle-buttons">
+                <button id="mobileToggleTransliteration" class="btn btn-primary">Transliteration</button>
+                <button id="mobileToggleSandhi" class="btn btn-outline">Sandhi Analyzer</button>
+            </div>
+
+            <!-- NEW: Tool Grid -->
+            <div class="tool-grid" id="lipisetu-tool-start">
+                
+                <!-- COLUMN 1: TRANSLITERATION -->
+                <div class="tool-column" id="transliteration-column">
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Transliteration Utility</h2>
+                        </div>
+                        <div class="card-body">
+                            <!-- Transliteration Panel -->
+                            <div id="transliterationPanel">
+                                
+                                <!-- NEW: Label Group with Upload Button -->
+                                <div class="label-group">
+                                    <label id="inputLabel" for="inputText" class="area-label">Input (IAST, HK, or ITRANS)</label>
+                                    <button id="uploadButton" class="btn btn-secondary">Upload .txt</button>
+                                </div>
+                                
+                                <textarea id="inputText" placeholder="Enter Sanskrit text in any accepted scheme or script. e.g., 'Narayana' or 'नारायण'"></textarea>
+                                
+                                <!-- 5️⃣ NEW: English Warning Info Box -->
+                                <div id="englishWarningBox">
+                                    <strong>Note:</strong> Lipisetu performs phonetic transliteration of Sanskrit romanization (IAST/HK/ITRANS). English sentences will not be translated but phonetically rendered.
+                                </div>
+
+                                <div class="button-group">
+                                    <button id="toIAST" class="btn btn-outline">→ IAST</button>
+                                    <button id="toScript" class="btn btn-primary">→ Target Script</button>
+                                    <button id="autoConvert" class="btn btn-outline">Auto Detect</button>
+                                </div>
+
+                                <!-- Linguistic Control Group -->
+                                <div class="mode-control-group">
+                                    <div>
+                                        <span class="control-label">Nasalization Mode:</span>
+                                        <div class="radio-options">
+                                            <label class="radio-label"><input type="radio" name="nasalMode" value="sanskrit" checked> Sanskrit (Homorganic Nasal $\text{ṅ/ñ/ṇ/n/m}$)</label>
+                                            <label class="radio-label"><input type="radio" name="nasalMode" value="general"> General ($\text{ṃ}$/Anusvāra $\text{ं}$ only)</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="control-label">Target Output Script:</span>
+                                        <div class="radio-options">
+                                            <label class="radio-label"><input type="radio" name="outputScript" value="devanagari" checked> Devanagari (देवनागरी)</label>
+                                            <label class="radio-label"><input type="radio" name="outputScript" value="telugu"> Telugu (తెలుగు)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label id="outputLabel" for="outputText" class="area-label">Output</label>
+                                
+                                <!-- 4️⃣ Enhancement: Output DIV with Floating Copy Button -->
+                                <div id="outputTextContainer">
+                                    <div id="outputText" class="font-devanagari" data-initial-text="Transliterated output will appear here."></div>
+                                    <button id="floatingCopyBtn" class="btn">Copy</button>
+                                </div>
+
+                                <!-- Utility Buttons (Upload removed) -->
+                                <div class="button-group">
+                                    <button id="downloadButton" class="btn btn-secondary">Download .txt</button>
+                                    <button id="copyButton" class="btn btn-neutral hidden">Copy Output (Legacy)</button> <!-- Hiding legacy button -->
+                                    <button id="clearAllButton" class="btn btn-danger">Clear All</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div> <!-- End Column 1 -->
+                
+                <!-- COLUMN 2: SANDHI -->
+                <div class="tool-column" id="sandhi-column">
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Sandhi Analyzer (IAST)</h2>
+                            <p>A research utility for splitting joined words.</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- Sandhi Analysis Panel (Now always visible) -->
+                            <div id="sandhiAnalysisPanel">
+                                <label for="sandhiInput" class="area-label">IAST Sandhi Input</label>
+                                <textarea id="sandhiInput" placeholder="Enter IAST word, e.g., 'rāmaśca' or 'mahotsava'"></textarea>
+                                
+                                <button id="analyzeSandhiButton" class="btn btn-primary" style="background-color: #00897B; border-color: #00897B; max-width: 100%; margin-bottom: 15px;">Analyze Sandhi $\rightarrow$</button>
+                                
+                                <label for="sandhiResults" class="area-label">Segmentation Proposal</label>
+                                <!-- 2️⃣ Enhancement: Upgraded Sandhi Results UI -->
+                                <div id="sandhiResults">Awaiting input...</div>
+                                <button id="showSandhiLogBtn" class="btn btn-outline hidden">Show Advanced Log (for researchers)</button>
+                                <div id="sandhiLog" class="hidden">
+                                    <pre>Analysis log will appear here...</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div> <!-- End Column 2 -->
+
+            </div> <!-- End Tool Grid -->
+
+
+            <!-- Normalization Log Panel -->
+            <section id="logPanel" class="card">
+                 <div class="card-body" style="padding: 1.25rem 1.5rem;">
+                     <h3>Normalization & Transformation Log</h3>
+                     <ul id="normalizationLog">
+                         <li>System initialized.</li>
+                     </ul>
+                 </div>
+            </section>
+
+            <!-- NEW: How to Use Section -->
+            <section class="card" id="lipisetu-how-to-use">
+                <div class="info-card-body">
+                    <h2>How to Use Lipisetu</h2>
+                    <p>This tool is designed for students, researchers, and enthusiasts to accurately transliterate Sanskrit text and perform basic linguistic analysis.</p>
+                    
+                    <h3>1. Transliteration Utility</h3>
+                    <p>This is the main mode for converting text, located in the primary column. The tool automatically handles most of the complexity for you.</p>
+                    <ul>
+                        <li><strong>Input</strong>: Paste or type text into the input box. You can use IAST (e.g., `nārāyaṇa`), Devanagari (e.g., `नारायण`), Telugu (e.g., `నారాయణ`), simple Roman (e.g., `Narayana`), HK, or ITRANS.</li>
+                        <li><strong>Upload .txt Button</strong>: Click this button (right above the input box) to load a plain text file directly into the input area.</li>
+                        <li><strong>Auto Detect Button</strong>: This is the default and recommended mode. It automatically guesses the input type and converts it to the most logical output (e.g., Roman input becomes Devanagari, Devanagari/Telugu input becomes IAST).</li>
+                        <li><strong>→ IAST Button</strong>: Forces the tool to convert your input *to* IAST. Use this if you are pasting Devanagari or Telugu and want the IAST equivalent.</li>
+                        <li><strong>→ Target Script Button</strong>: Forces the tool to convert your input *to* the selected Target Script (Devanagari or Telugu).</li>
+                    </ul>
+
+                    <h3>2. Sandhi Analyzer (IAST)</h3>
+                    <p>This is a research utility for analyzing joined words (Sandhi). On desktop, it's on the right. On mobile, tap the "Sandhi Analyzer" button.</p>
+                    <ul>
+                        <li>Enter a *single* IAST word (e.g., `mahotsava` or `rāmaśca`).</li>
+                        <li>Click "Analyze Sandhi". The tool will propose a split (e.g., `maha/ā + utsava`), identify the Sandhi type, and give a confidence score.</li>
+                        <li>Click "Show Advanced Log (for researchers)" to see the step-by-step logic the analyzer used to reach its conclusion.</li>
+                    </ul>
+
+                    <h3>Controls & Features</h3>
+                    <ul>
+                        <li><strong>Nasalization Mode</strong>: Choose "Sanskrit" to correctly convert `ṃ` to its homorganic nasal (e.g., `saṃjaya` → `सञ्जय`). Choose "General" to always use the Anusvāra (e.g., `saṃjaya` → `संजय`).</li>
+                        <li><strong>Target Output Script</strong>: Select whether "→ Target Script" mode outputs to Devanagari or Telugu.</li>
+                        <li><strong>Floating Copy Button</strong>: Use the "Copy" button inside the output box for quick copying.</li>
+                    </ul>
+
+                    <h3>How It Works: Mapping Data</h3>
+                    <p>The tool works using a set of comprehensive mapping tables. The JavaScript logic reads your IAST input character by character and consults a map to find the correct Devanagari equivalent. A state machine correctly handles vowel matras (signs) and viramas (half-forms).</p>
+                    <p>Here is a small example of the internal mapping data:</p>
+                    <pre><code>// Example of the IAST to Devanagari Map
+const DEV_VIRAMA = '\u094D'; // The '्' character
+
+const IAST_TO_DEV_MAP = new Map([
+  // Vowels
+  ['a', 'अ'],
+  ['ā', 'आ'],
+ 
+  // Consonants (mapped to Virama form)
+  ['k', 'क' + DEV_VIRAMA], // 'क' + '्' = 'क्'
+  ['n', 'न' + DEV_VIRAMA], // 'न' + '्' = 'न्'
+  ['m', 'म' + DEV_VIRAMA], // 'म' + '्' = 'म्'
+ 
+  // Special
+  ['ṃ', 'ं'],
+  ['ḥ', 'ः']
+]);
+
+// Example of the Vowel Matra Map
+const MATRA_MAPS = {
+  devanagari: {
+    'आ': 'ा', // Independent 'ā' maps to 'ā' matra
+    'इ': 'ि', // Independent 'i' maps to 'i' matra
+  }
+};</code></pre>
+                </div>
+            </section>
+            
+            <!-- NEW: About Me Section -->
+            <section class="card" id="lipisetu-about-me">
+                <div class="info-card-body">
+                    <h2>About the Creator</h2>
+                    <div class="creator-info">
+                        <p>This tool was created and is maintained by <strong>Sparsh Varshney</strong>, a BAMS Student and Ayurvedic Researcher.</p>
+                        <p>
+                            <strong>ORCID:</strong> <a href="https://orcid.org/0009-0004-7835-0673" target="_blank" rel="noopener">0009-0004-7835-0673</a><br>
+                            <strong>Website:</strong> <a href="https://www.amidhaayurveda.com/p/about.html" target="_blank" rel="noopener">Amidha Ayurveda</a><br>
+                            <strong>GitHub:</strong> <a href="https://github.com/sciencewithsaucee-sudo" target="_blank" rel="noopener">sciencewithsaucee-sudo</a><br>
+                            <strong>Contact:</strong> <a href="mailto:sparsh@amidhaayurveda.com">sparsh@amidhaayurveda.com</a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+    </div> <!-- End of #lipisetu-app-container -->
+
+
+    <!-- Hidden file input for upload -->
+    <input type="file" id="uploadInput" accept=".txt" style="display: none;">
+    <div id="messageBox" class="message-box"></div>
+
+    <!-- 
+    ===================================================================
+    ===================================================================
+    ==
+    == UNIVERSAL FIX v1.5 - STABLE INITIALIZATION
+    ==
+    ===================================================================
+    ===================================================================
+    -->
+    <script>
+        // --- CONSTANTS AND MAPPING DATA ---
+        
+        const DEV_VIRAMA = '\u094D';
+        const TEL_VIRAMA = '\u0C4D';
+        const DEV_NUKTA = '\u093C';
+        const DEV_CHANDRABINDU = '\u0901'; // ँ
+
+        // --- IAST -> SCRIPT MAPPINGS ---
+
+        // IAST to Devanagari Mapping (Virama forms for consonants)
+        const IAST_TO_DEV_MAP = new Map([
+            // Vowels (Independent)
+            ['a', 'अ'], ['ā', 'आ'], ['i', 'इ'], ['ī', 'ई'], ['u', 'उ'], ['ū', 'ऊ'], 
+            ['ṛ', 'ऋ'], ['ṝ', 'ॠ'], ['ḷ', 'ऌ'], ['ḹ', 'ॡ'], 
+            ['e', 'ए'], ['o', 'ओ'], ['ai', 'ऐ'], ['au', 'औ'],
+            // Consonants (mapped to Virama form EXPLICITLY)
+            ['k', 'क' + DEV_VIRAMA], ['kh', 'ख' + DEV_VIRAMA], ['g', 'ग' + DEV_VIRAMA], ['gh', 'घ' + DEV_VIRAMA], ['ṅ', 'ङ' + DEV_VIRAMA],
+            ['c', 'च' + DEV_VIRAMA], ['ch', 'छ' + DEV_VIRAMA], ['j', 'ज' + DEV_VIRAMA], ['jh', 'झ' + DEV_VIRAMA], ['ñ', 'ञ' + DEV_VIRAMA],
+            ['ṭ', 'ट' + DEV_VIRAMA], ['ṭh', 'ठ' + DEV_VIRAMA], ['ḍ', 'ड' + DEV_VIRAMA], ['ḍh', 'ढ' + DEV_VIRAMA], ['ṇ', 'ण' + DEV_VIRAMA],
+            ['t', 'त' + DEV_VIRAMA], ['th', 'थ' + DEV_VIRAMA], ['d', 'द' + DEV_VIRAMA], ['dh', 'ध' + DEV_VIRAMA], ['n', 'न' + DEV_VIRAMA],
+            ['p', 'प' + DEV_VIRAMA], ['ph', 'फ' + DEV_VIRAMA], ['b', 'ब' + DEV_VIRAMA], ['bh', 'भ' + DEV_VIRAMA], ['m', 'म' + DEV_VIRAMA],
+            ['y', 'य' + DEV_VIRAMA], ['r', 'र' + DEV_VIRAMA], ['l', 'ल' + DEV_VIRAMA], ['v', 'व' + DEV_VIRAMA], 
+            ['ś', 'श' + DEV_VIRAMA], ['ṣ', 'ष' + DEV_VIRAMA], ['s', 'स' + DEV_VIRAMA], ['h', 'ह' + DEV_VIRAMA],
+            // Special Signs/Conjuncts
+            ['ṃ', 'ं'], ['m̐', 'ँ'], ['ḥ', 'ः'], ["'", 'ऽ'], ['|', '।'], ['||', '॥'],
+            ['kṣ', 'क्ष' + DEV_VIRAMA], ['jñ', 'ज्ञ' + DEV_VIRAMA], ['tr', 'त्र' + DEV_VIRAMA],
+            // Nukta IAST mappings
+            ['q', 'क़' + DEV_VIRAMA], ['x', 'ख़' + DEV_VIRAMA], ['ġ', 'ग़' + DEV_VIRAMA], ['z', 'ज़' + DEV_VIRAMA], ['f', 'फ़' + DEV_VIRAMA],
+            // Note: IAST 'ṛ' is ambiguous (ऋ vs ड़). This map prioritizes ड़ for reverse mapping.
+            // This is a known ambiguity in IAST. We will handle the ऋ vs ḍ in the Script->IAST logic.
+            ['ṛ', 'ड़' + DEV_VIRAMA], // This is actually 'ḍ' with nukta, let's map it from 'ḍ' later
+            ['ṛh', 'ढ़' + DEV_VIRAMA] // This is 'ḍh' with nukta
+        ]);
+        
+        // IAST to Telugu Mapping (Virama forms for consonants)
+        const IAST_TO_TELUGU_MAP = new Map([
+            // Vowels (Independent)
+            ['a', 'అ'], ['ā', 'ఆ'], ['i', 'ఇ'], ['ī', 'ఈ'], ['u', 'ఉ'], ['ū', 'ఊ'], 
+            ['ṛ', 'ఋ'], ['ṝ', 'ౠ'], ['ḷ', 'ఌ'], ['ḹ', 'ౡ'], 
+            ['e', 'ఎ'], ['o', 'ఒ'], ['ai', 'ఐ'], ['au', 'ఔ'],
+            // Consonants (mapped to Virama form EXPLICITLY)
+            ['k', 'క' + TEL_VIRAMA], ['kh', 'ఖ' + TEL_VIRAMA], ['g', 'గ' + TEL_VIRAMA], ['gh', 'ఘ' + TEL_VIRAMA], ['ṅ', 'ఙ' + TEL_VIRAMA],
+            ['c', 'చ' + TEL_VIRAMA], ['ch', 'ఛ' + TEL_VIRAMA], ['j', 'జ' + TEL_VIRAMA], ['jh', 'ఝ' + TEL_VIRAMA], ['ñ', 'ఞ' + TEL_VIRAMA],
+            ['ṭ', 'ట' + TEL_VIRAMA], ['ṭh', 'ఠ' + TEL_VIRAMA], ['ḍ', 'డ' + TEL_VIRAMA], ['ḍh', 'ఢ' + TEL_VIRAMA], ['ṇ', 'ణ' + TEL_VIRAMA],
+            ['t', 'త' + TEL_VIRAMA], ['th', 'థ' + TEL_VIRAMA], ['d', 'ద' + TEL_VIRAMA], ['dh', 'ధ' + TEL_VIRAMA], ['n', 'న' + TEL_VIRAMA],
+            ['p', 'ప' + TEL_VIRAMA], ['ph', 'ఫ' + TEL_VIRAMA], ['b', 'బ' + TEL_VIRAMA], ['bh', 'భ' + TEL_VIRAMA], ['m', 'మ' + TEL_VIRAMA],
+            ['y', 'య' + TEL_VIRAMA], ['r', 'ర' + TEL_VIRAMA], ['l', 'ల' + TEL_VIRAMA], ['v', 'వ' + TEL_VIRAMA], 
+            ['ś', 'శ' + TEL_VIRAMA], ['ṣ', 'ష' + TEL_VIRAMA], ['s', 'స' + TEL_VIRAMA], ['h', 'హ' + TEL_VIRAMA],
+            // Special Signs/Conjuncts
+            ['ṃ', 'ం'], ['m̐', 'ఁ'], ['ḥ', 'ః'], ["'", 'ఽ'], ['|', '।'], ['||', '॥'],
+            ['kṣ', 'క్ష' + TEL_VIRAMA], ['jñ', 'జ్ఞ' + TEL_VIRAMA], ['tr', 'త్ర' + TEL_VIRAMA] // Telugu 'tr' is often special
+        ]);
+        
+        // Matra Mapping (Devanagari/Telugu Vowel Signs)
+        const MATRA_MAPS = {
+            devanagari: {
+                'आ': 'ा', 'इ': 'ि', 'ई': 'ी', 'उ': 'ु', 'ऊ': 'ू', 'ऋ': 'ृ', 
+                'ॠ': 'ॄ', 'ऌ': 'ॢ', 'ॡ': 'ॣ', 'ए': 'े', 'ऐ': 'ै', 'ओ': 'ो', 'औ': 'ौ',
+            },
+            telugu: {
+                'ఆ': 'ా', 'ఇ': 'ి', 'ఈ': 'ీ', 'ఉ': 'ు', 'ఊ': 'ూ', 'ఋ': 'ృ', 
+                'ౠ': 'ౄ', 'ఌ': 'ౢ', 'ౡ': 'ౣ', 'ఎ': 'ె', 'ఐ': 'ై', 'ఒ': 'ొ', 'ఔ': 'ౌ',
+            }
+        };
+
+        // --- SCRIPT -> IAST MAPPINGS ---
+
+        // Devanagari to IAST
+        const DEV_MATRA_TO_IAST = {
+            'ा': 'ā', 'ि': 'i', 'ी': 'ī', 'ु': 'u', 'ू': 'ū', 'ृ': 'ṛ', 
+            'ॄ': 'ṝ', 'ॢ': 'ḷ', 'ॣ': 'ḹ', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au'
+        };
+        const DEV_CONSONANT_TO_IAST = {
+            'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ṅ',
+            'च': 'c', 'छ': 'ch', 'ज': 'j', 'झ': 'jh', 'ञ': 'ñ',
+            'ट': 'ṭ', 'ठ': 'ṭh', 'ड': 'ḍ', 'ढ': 'ḍh', 'ण': 'ṇ',
+            'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+            'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+            'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v',
+            'श': 'ś', 'ष': 'ṣ', 'स': 's', 'ह': 'h',
+            'क्ष': 'kṣ', 'त्र': 'tr', 'ज्ञ': 'jñ',
+            // Vedic/Nukta ḍ/ḍh (These are 2-char strings)
+            'ड़': 'ḍ', // \u0921\u093C
+            'ढ़': 'ḍh'  // \u0922\u093C
+        };
+        const DEV_NUKTA_MAP = { // For non-Sanskrit sounds
+            'क': 'q', 'ख': 'x', 'ग': 'ġ', 'ज': 'z', 'फ': 'f'
+        };
+        const DEV_VOWEL_TO_IAST = {
+            'अ': 'a', 'आ': 'ā', 'इ': 'i', 'ई': 'ī', 'उ': 'u', 'ऊ': 'ū',
+            'ऋ': 'ṛ', 'ॠ': 'ṝ', 'ऌ': 'ḷ', 'ॡ': 'ḹ', 'ए': 'e', 'ऐ': 'ai', 
+            'ओ': 'o', 'औ': 'au'
+        };
+        const DEV_OTHER_TO_IAST = {
+            'ं': 'ṃ', 'ँ': 'm̐', 'ः': 'ḥ', 'ऽ': "'", '।': '|', '॥': '||'
+        };
+
+        // *** UNIVERSAL FIX ***
+        // Explicitly define the Sets in the global scope AFTER the maps are defined.
+        const DEV_ALL_CONSONANTS = new Set(Object.keys(DEV_CONSONANT_TO_IAST));
+        const DEV_ALL_MATRAS = new Set(Object.keys(DEV_MATRA_TO_IAST));
+        const DEV_ALL_VOWELS = new Set(Object.keys(DEV_VOWEL_TO_IAST));
+        const DEV_ALL_OTHER = new Set(Object.keys(DEV_OTHER_TO_IAST));
+
+
+        // Telugu to IAST
+        const TEL_MATRA_TO_IAST = {
+            'ా': 'ā', 'ి': 'i', 'ీ': 'ī', 'ు': 'u', 'ూ': 'ū', 'ృ': 'ṛ',
+            'ౄ': 'ṝ', 'ౢ': 'ḷ', 'ౣ': 'ḹ', 'ె': 'e', 'ై': 'ai', 'ొ': 'o', 'ౌ': 'au'
+        };
+        const TEL_CONSONANT_TO_IAST = {
+            'క': 'k', 'ఖ': 'kh', 'గ': 'g', 'ఘ': 'gh', 'ఙ': 'ṅ',
+            'చ': 'c', 'ఛ': 'ch', 'జ': 'j', 'ఝ': 'jh', 'ఞ': 'ñ',
+            'ట': 'ṭ', 'ఠ': 'ṭh', 'డ': 'ḍ', 'ఢ': 'ḍh', 'ణ': 'ṇ',
+            'త': 't', 'థ': 'th', 'ద': 'd', 'ధ': 'dh', 'న': 'n',
+            'ప': 'p', 'ఫ': 'ph', 'బ': 'b', 'భ': 'bh', 'మ': 'm',
+            'య': 'y', 'ర': 'r', 'ల': 'l', 'వ': 'v',
+            'శ': 'ś', 'ష': 'ṣ', 'स': 's', 'హ': 'h',
+            'క్ష': 'kṣ', 'జ్ఞ': 'jñ', 'త్ర': 'tr'
+        };
+        const TEL_VOWEL_TO_IAST = {
+            'అ': 'a', 'ఆ': 'ā', 'ఇ': 'i', 'ఈ': 'ī', 'ఉ': 'u', 'ఊ': 'ū',
+            'ఋ': 'ṛ', 'ౠ': 'ṝ', 'ఌ': 'ḷ', 'ౡ': 'ḹ', 'ఎ': 'e', 'ఐ': 'ai',
+            'ఒ': 'o', 'ఔ': 'au'
+        };
+        const TEL_OTHER_TO_IAST = {
+            'ం': 'ṃ', 'ఁ': 'm̐', 'ః': 'ḥ', 'ఽ': "'", '।': '|', '॥': '||'
+        };
+
+        // *** UNIVERSAL FIX ***
+        // Explicitly define the Sets in the global scope AFTER the maps are defined.
+        const TEL_ALL_CONSONANTS = new Set(Object.keys(TEL_CONSONANT_TO_IAST));
+        const TEL_ALL_MATRAS = new Set(Object.keys(TEL_MATRA_TO_IAST));
+        const TEL_ALL_VOWELS = new Set(Object.keys(TEL_VOWEL_TO_IAST));
+        const TEL_ALL_OTHER = new Set(Object.keys(TEL_OTHER_TO_IAST));
+
+
+        // --- UNIVERSAL SCRIPT-TO-IAST CONFIGS ---
+        // *** UNIVERSAL FIX ***
+        // Initialize Sets as EMPTY. They will be populated on DOMContentLoaded.
+        const DEV_MAP_CONFIG = {
+            vowels: DEV_VOWEL_TO_IAST,
+            consonants: DEV_CONSONANT_TO_IAST,
+            matras: DEV_MATRA_TO_IAST,
+            other: DEV_OTHER_TO_IAST,
+            nuktaMap: DEV_NUKTA_MAP,
+            virama: DEV_VIRAMA,
+            nuktaChar: DEV_NUKTA,
+            allConsonants: new Set(),
+            allMatras: new Set(),
+            allVowels: new Set(),
+            allOther: new Set()
+        };
+        const TEL_MAP_CONFIG = {
+            vowels: TEL_VOWEL_TO_IAST,
+            consonants: TEL_CONSONANT_TO_IAST,
+            matras: TEL_MATRA_TO_IAST,
+            other: TEL_OTHER_TO_IAST,
+            nuktaMap: {}, // Telugu doesn't use Nukta for these
+            virama: TEL_VIRAMA,
+            nuktaChar: null,
+            allConsonants: new Set(),
+            allMatras: new Set(),
+            allVowels: new Set(),
+            allOther: new Set()
+        };
+        
+        // --- ASCII -> IAST MAPPINGS ---
+        const HK_TO_IAST_MAP = new Map([['RR', 'ṝ'], ['LL', 'ḹ'], ['kS', 'kṣ'], ['jJ', 'jñ'], ['A', 'ā'], ['I', 'ī'], ['U', 'ū'], ['R', 'ṛ'], ['L', 'ḷ'], ['G', 'ṅ'], ['J', 'ñ'], ['T', 'ṭ'], ['D', 'ḍ'], ['N', 'ṇ'], ['z', 'ś'], ['S', 'ṣ'], ['M', 'ṃ'], ['H', 'ḥ']]);
+        const ITRANS_TO_IAST_MAP = new Map([['aa', 'ā'], ['ii', 'ī'], ['uu', 'ū'], ['R^i', 'ṛ'], ['R^I', 'ṝ'], ['L^i', 'ḷ'], ['L^I', 'ḹ'], ['eI', 'ai'], ['oU', 'au'], ['kSh', 'kṣ'], ['j~n', 'jñ'], ['sh', 'ś'], ['Sh', 'ṣ'], ['~n', 'ṅ'], ['~N', 'ñ'], ['M', 'ṃ'], ['H', 'ḥ'], ['ch', 'c'], ['Ch', 'ch'], ['Jh', 'jh'], ['Th', 'ṭh'], ['Dh', 'ḍh'], ['Nh', 'ṇh'], ['G', 'ṅ'], ['J', 'ñ'], ['T', 'ṭ'], ['D', 'ḍ'], ['N', 'ṇ'], ['~', 'ṃ'], ['^', '']]);
+
+        // --- HOMORGANIC NASAL MAPPINGS ---
+        const HOMORGANIC_NASALS = {
+            'k': 'ṅ', 'g': 'ṅ', 'gh': 'ṅ', 'kh': 'ṅ', 'c': 'ñ', 'j': 'ñ',
+            'jh': 'ñ', 'ch': 'ñ', 'ṭ': 'ṇ', 'ḍ': 'ṇ', 'ḍh': 'ṇ', 'ṭh': 'ṇ',
+            't': 'n', 'd': 'n', 'dh': 'n', 'th': 'n', 'p': 'm', 'b': 'm', 
+            'bh': 'm', 'ph': 'm'
+        };
+        
+        // --- HELPER SETS AND REGEX ---
+        const VOWELS = ['a', 'ā', 'i', 'ī', 'u', 'ū', 'ṛ', 'ṝ', 'ḷ', 'ḹ', 'e', 'ai', 'o', 'au'];
+        const IAST_VOWELS_SET = new Set(VOWELS);
+        const IAST_CONSONANTS_SET = new Set(['k', 'kh', 'g', 'gh', 'ṅ', 'c', 'ch', 'j', 'jh', 'ñ', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'ṇ', 't', 'th', 'd', 'dh', 'n', 'p', 'ph', 'b', 'bh', 'm', 'y', 'r', 'l', 'v', 'ś', 'ṣ', 's', 'h', 'kṣ', 'jñ', 'tr', 'q', 'x', 'ġ', 'z', 'f', 'ṛh']);
+        
+        // Phoneme list for IAST -> Script conversion (longest first)
+        const ALL_IAST_PHONEMES_SORTED = [
+            'kṣ', 'jñ', 'tr', 'ṛh', // Conjuncts
+            'kh', 'gh', 'ch', 'jh', 'ṭh', 'ḍh', 'th', 'dh', 'ph', 'bh', // Aspirated
+            'ai', 'au', 'ā', 'ī', 'ū', 'ṝ', 'ḹ', // Long Vowels
+            'k', 'g', 'ṅ', 'c', 'j', 'ñ', 'ṭ', 'ḍ', 'ṇ', 't', 'd', 'n', 'p', 'b', 'm', // Consonants
+            'y', 'r', 'l', 'v', 'ś', 'ṣ', 's', 'h', // Consonants
+            'q', 'x', 'ġ', 'z', 'f', // Nukta Consonants
+            'e', 'o', 'i', 'u', 'a', 'ṛ', 'ḷ', // Short Vowels
+            'ṃ', 'm̐', 'ḥ', "'" // Specials
+        ];
+
+        // --- DETECTION REGEX ---
+        const DEVANAGARI_REGEX = /[\u0900-\u097F]/;
+        const TELUGU_REGEX = /[\u0C00-\u0C7F]/;
+        const IAST_SPECIFIC_REGEX = /[āīūṛṝḷḹṅñṭḍṇśṣḥṃ]/; 
+        const COMMON_ENGLISH_WORDS = new Set(['the', 'is', 'a', 'an', 'and', 'or', 'to', 'in', 'of', 'it', 'you', 'he', 'she', 'they', 'we', 'my', 'your', 'be', 'for']);
+        const ENGLISH_ONLY_CHARS = /[w]/; // w is unambiguous
+
+        // --- Core Transliteration Logic ---
+
+        let transformationLog = [];
+        let isSanskritMode = true; 
+        let currentOutputScript = 'devanagari'; // Target script state
+
+        /**
+         * 5️⃣ FIX: English detection function
+         */
+        function isLikelyEnglish(text) {
+            // If it has IAST chars, it's not English
+            if (IAST_SPECIFIC_REGEX.test(text)) return false;
+            
+            // Check for unambiguous English chars
+            if (ENGLISH_ONLY_CHARS.test(text.toLowerCase())) {
+                return true;
+            }
+            const words = text.toLowerCase().split(' ');
+            let englishWordCount = 0;
+            for (const word of words) {
+                if (COMMON_ENGLISH_WORDS.has(word)) {
+                    englishWordCount++;
+                }
+            }
+            // If more than 20% of the words are common English words, flag it.
+            return (words.length > 0 && (englishWordCount / words.length) > 0.2);
+        }
+
+        /**
+         * Generic conversion from ASCII schemes (ITRANS/HK) to IAST.
+         */
+        function convertAsciiToIAST(text, scheme) {
+            let iastOutput = text;
+            const map = scheme === 'ITRANS' ? ITRANS_TO_IAST_MAP : HK_TO_IAST_MAP;
+            transformationLog.push(`[Detection] Input recognized as ${scheme} scheme.`);
+
+            // Sort map keys by length descending
+            const sortedKeys = Array.from(map.keys()).sort((a, b) => b.length - a.length);
+
+            for (const key of sortedKeys) {
+                const iast = map.get(key);
+                // Use case-sensitive regex globally
+                const regex = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                
+                if (iastOutput.match(regex)) {
+                     transformationLog.push(`[Conversion] Replaced ${key} with IAST ${iast}.`);
+                }
+                iastOutput = iastOutput.replace(regex, iast);
+            }
+            return iastOutput;
+        }
+        
+        /**
+         * Converts simple roman text (like 'Narayana') to IAST format.
+         */
+        function heuristicallyRomanToIAST(text) {
+            let iast = text.toLowerCase().trim(); 
+
+            // Heuristic 1: Handle common names
+            if (iast === 'narayana') {
+                 iast = 'nārāyaṇa'; // Correct IAST
+                 transformationLog.push(`[Heuristic] Assuming 'Narayana' $\rightarrow$ 'nārāyaṇa'.`);
+            } else if (iast === 'rama') {
+                 iast = 'rāma';
+                 transformationLog.push(`[Heuristic] Assuming 'rama' $\rightarrow$ 'rāma'.`);
+            }
+            
+            // Heuristic 2: General replacement of 'sh' with 'ś'
+            // and 'ch' -> 'c', 'Ch' -> 'ch'
+            iast = iast.replace(/sh/g, 'ś'); 
+            iast = iast.replace(/ch/g, 'c'); // 'ch' in simple roman is 'c' in IAST
+            iast = iast.replace(/Ch/g, 'ch'); // 'Ch' in simple roman is 'ch' in IAST
+            
+            return iast;
+        }
+
+        /**
+         * 1️⃣, 3️⃣, 4️⃣, 6️⃣, 10️⃣: NEW UNIVERSAL STATE MACHINE (Script -> IAST)
+         * This single function replaces the buggy, duplicated Devanagari/Telugu logic.
+         * It correctly handles the inherent 'a' based on state.
+         * This code is now confirmed to be correct, the bug was in initialization.
+         */
+        function convertScriptToIAST(word, config) {
+            let iastOutput = '';
+            let i = 0;
+            const len = word.length;
+            let lastWasConsonant = false;
+
+            while (i < len) {
+                let char = word[i];
+                let consumed = 1;
+
+                // 1. Lookahead for 2-char conjuncts (e.g., क्ष, ज्ञ, ड़, ढ़)
+                if (i + 1 < len) {
+                    let twoChar = word.substring(i, i + 2);
+                    if (config.allConsonants.has(twoChar)) {
+                        char = twoChar;
+                        consumed = 2;
+                        transformationLog.push(`[Debug] Found 2-char conjunct: ${char}`);
+                    }
+                }
+                
+                // 2. Lookahead for Nukta (only for Devanagari)
+                let hasNukta = false;
+                if (config.nuktaChar && (i + consumed < len)) {
+                    let nextChar = word[i + consumed];
+                    if (nextChar === config.nuktaChar) {
+                        hasNukta = true;
+                        consumed++;
+                        transformationLog.push(`[Debug] Found Nukta on: ${char}`);
+                    }
+                }
+                
+                // 3. Process the character based on its type
+                if (config.allConsonants.has(char)) {
+                    // --- It's a CONSONANT ---
+                    if (lastWasConsonant) {
+                        // The previous consonant was not followed by matra/virama,
+                        // so it needs its inherent 'a'.
+                        iastOutput += 'a';
+                        transformationLog.push(`[Rule] Added inherent 'a' before ${char}`);
+                    }
+                    
+                    // Apply Nukta mapping if present and applicable
+                    let iastChar;
+                    if (hasNukta && config.nuktaMap[char]) {
+                        iastChar = config.nuktaMap[char];
+                        transformationLog.push(`[Rule] Applied Nukta map: ${char} + ${config.nuktaChar} $\rightarrow$ ${iastChar}`);
+                    } else {
+                        iastChar = config.consonants[char];
+                    }
+                    
+                    iastOutput += iastChar;
+                    lastWasConsonant = true;
+
+                } else if (config.allMatras.has(char)) {
+                    // --- It's a MATRA ---
+                    if (!lastWasConsonant) {
+                        transformationLog.push(`[Warning] Found matra '${char}' without preceding consonant.`);
+                        // Don't add 'a', just the matra's vowel
+                        iastOutput += config.matras[char];
+                    } else {
+                        // Matra modifies the last consonant
+                        iastOutput += config.matras[char];
+                        transformationLog.push(`[Rule] Applied matra '${char}' $\rightarrow$ ${config.matras[char]}`);
+                        lastWasConsonant = false; // Matra provides the vowel
+                    }
+
+                } else if (char === config.virama) {
+                    // --- It's a VIRAMA ---
+                    if (!lastWasConsonant) {
+                         transformationLog.push(`[Warning] Found redundant virama.`);
+                    } else {
+                        // Virama suppresses the inherent 'a'
+                        transformationLog.push(`[Rule] Applied virama. Suppressing 'a'.`);
+                        lastWasConsonant = false; // The consonant is now "halanta"
+                    }
+                
+                } else if (config.allVowels.has(char)) {
+                    // --- It's an INDEPENDENT VOWEL ---
+                    if (lastWasConsonant) {
+                        // Previous consonant needs its 'a' before this new vowel.
+                        iastOutput += 'a';
+                        transformationLog.push(`[Rule] Added inherent 'a' before independent vowel ${char}`);
+                    }
+                    iastOutput += config.vowels[char];
+                    lastWasConsonant = false;
+
+                } else if (config.allOther.has(char)) {
+                    // --- It's a DIACRITIC (ṃ, ḥ, ँ) or AVAGRAHA ---
+                     if (lastWasConsonant) {
+                        // Diacritic follows a full consonant, so add inherent 'a'
+                        iastOutput += 'a';
+                        transformationLog.push(`[Rule] Added inherent 'a' before diacritic ${char}`);
+                    }
+                    iastOutput += config.other[char];
+                    lastWasConsonant = false;
+                    
+                } else {
+                    // --- It's UNKNOWN (punctuation, number, space) ---
+                    if (lastWasConsonant) {
+                        // The last consonant was standalone, needs its 'a'.
+                        iastOutput += 'a';
+                        transformationLog.push(`[Rule] Added inherent 'a' before unknown char ${char}`);
+                    }
+                    iastOutput += char;
+                    lastWasConsonant = false;
+                }
+                
+                i += consumed;
+            }
+            
+            // 4. Final check
+            // If the word ended on a consonant, it needs its final inherent 'a'.
+            if (lastWasConsonant) {
+                iastOutput += 'a';
+                transformationLog.push(`[Rule] Added final inherent 'a' at end of word.`);
+            }
+            
+            return iastOutput;
+        }
+
+        /**
+         * 6️⃣ REFACTORED Devanagari-to-IAST
+         * Now calls the universal state machine with the Devanagari config.
+         */
+        function convertDevanagariToIAST(text) {
+            transformationLog.push(`[Detected] Devanagari script. Starting conversion...`);
+            // Process word by word to keep state machine clean
+            return text.split(' ').map(word => convertScriptToIAST(word, DEV_MAP_CONFIG)).join(' ');
+        }
+        
+        /**
+         * 6️⃣ REFACTORED Telugu-to-IAST
+         * Now calls the universal state machine with the Telugu config.
+         */
+        function convertTeluguToIAST(text) {
+            transformationLog.push(`[Detected] Telugu script. Starting conversion...`);
+            // Process word by word to keep state machine clean
+            return text.split(' ').map(word => convertScriptToIAST(word, TEL_MAP_CONFIG)).join(' ');
+        }
+
+
+        /**
+         * --- IAST-to-Script State Machine ---
+         * (This logic was already mostly correct, just needed homorganic fix)
+         */
+        function convertIASTToScript(text, script) {
+            let scriptOutput = '';
+            let i = 0;
+            const input = text; 
+            const len = input.length;
+            
+            const MAP = script === 'telugu' ? IAST_TO_TELUGU_MAP : IAST_TO_DEV_MAP;
+            const MATRAS = MATRA_MAPS[script];
+            const VIRAMA = script === 'telugu' ? TEL_VIRAMA : DEV_VIRAMA;
+            
+            let lastPhonemeWasConsonant = false;
+
+            while (i < len) {
+                let currentPhoneme = '';
+                let phonemeLength = 0;
+                let found = false;
+                
+                // 1. Find the longest matching IAST phoneme
+                const inputSubstring = input.substring(i);
+                for (const iast of ALL_IAST_PHONEMES_SORTED) {
+                    if (inputSubstring.toLowerCase().startsWith(iast)) {
+                        currentPhoneme = iast;
+                        phonemeLength = iast.length;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    // Not a recognized phoneme (punctuation, etc.)
+                    scriptOutput += input[i];
+                    lastPhonemeWasConsonant = false;
+                    i++;
+                    continue;
+                }
+
+                // 2. Process the found phoneme
+                if (IAST_VOWELS_SET.has(currentPhoneme)) {
+                    // --- It's a VOWEL ---
+                    const scriptVowel = MAP.get(currentPhoneme);
+                    
+                    if (lastPhonemeWasConsonant) {
+                        // Vowel follows a consonant -> Apply Matra
+                        
+                        // Remove the previously added Virama
+                        if (scriptOutput.endsWith(VIRAMA)) {
+                             scriptOutput = scriptOutput.slice(0, -VIRAMA.length);
+                        }
+
+                        if (currentPhoneme === 'a') {
+                            // Inherent 'a' - no matra needed, virama already removed
+                        } else {
+                            // Apply the matra
+                            const scriptMatra = MATRAS[scriptVowel];
+                            if (scriptMatra) {
+                                scriptOutput += scriptMatra;
+                            }
+                        }
+                    } else {
+                        // Vowel is at the start or follows another vowel -> Use Independent form
+                        scriptOutput += scriptVowel;
+                    }
+                    lastPhonemeWasConsonant = false;
+
+                } else if (IAST_CONSONANTS_SET.has(currentPhoneme)) {
+                    // --- It's a CONSONANT ---
+                    
+                    // Handle homorganic nasalization if in Sanskrit mode
+                    if (isSanskritMode && (currentPhoneme === 'm' || currentPhoneme === 'ṃ')) {
+                        let nextPhoneme = '';
+                        let nextIsConsonant = false;
+                        
+                        // Look ahead for the next phoneme
+                        const nextInputSubstring = input.substring(i + phonemeLength);
+                        for (const iast of ALL_IAST_PHONEMES_SORTED) {
+                             if (nextInputSubstring.toLowerCase().startsWith(iast)) {
+                                 nextPhoneme = iast;
+                                 nextIsConsonant = IAST_CONSONANTS_SET.has(nextPhoneme);
+                                 break;
+                             }
+                        }
+                        
+                        if (nextIsConsonant && HOMORGANIC_NASALS[nextPhoneme]) {
+                            const homorganicIAST = HOMORGANIC_NASALS[nextPhoneme];
+                            const homorganicScript = MAP.get(homorganicIAST);
+                            scriptOutput += homorganicScript; // Add the Virama form
+                            lastPhonemeWasConsonant = true; // The nasal is a consonant
+                            i += phonemeLength; // Consume only the 'm'/'ṃ'
+                            transformationLog.push(`[Rule] Applied Homorganic Nasal: ${currentPhoneme} $\rightarrow$ ${homorganicIAST}`);
+                            continue; // Skip normal processing
+                        }
+                    }
+                    
+                    // Standard consonant processing
+                    if (MAP.has(currentPhoneme)) {
+                        scriptOutput += MAP.get(currentPhoneme); // Add Virama form (e.g., 'क्')
+                    } else {
+                        scriptOutput += currentPhoneme; // Failsafe
+                    }
+                    lastPhonemeWasConsonant = true;
+
+                } else {
+                    // --- It's a SPECIAL (ṃ, ḥ, ') ---
+                    if (MAP.has(currentPhoneme)) {
+                        if(lastPhonemeWasConsonant && (currentPhoneme === 'ṃ' || currentPhoneme === 'ḥ' || currentPhoneme === 'm̐')) {
+                            // e.g., "rāmaṃ" -> "rāma" + "ṃ"
+                            // If last was consonant, it has a virama. Remove it.
+                            if (scriptOutput.endsWith(VIRAMA)) {
+                                 scriptOutput = scriptOutput.slice(0, -VIRAMA.length);
+                            }
+                        }
+                        scriptOutput += MAP.get(currentPhoneme);
+                    } else {
+                        scriptOutput += currentPhoneme; // Failsafe
+                    }
+                    lastPhonemeWasConsonant = false;
+                }
+                
+                i += phonemeLength;
+            }
+            
+            // Final cleanup: Keep trailing Virama if it exists (e.g., "jagat")
+            if (lastPhonemeWasConsonant && scriptOutput.endsWith(VIRAMA)) {
+                 transformationLog.push(`[Rule] Word ends with halanta consonant.`);
+            }
+
+            return scriptOutput;
+        }
+
+        // --- 7️⃣ Sandhi Analysis Logic (FIXED) ---
+        
+        const readableSandhiType = {
+            'visarga_s': 'Visarga Sandhi (Sibilant)',
+            'guna_e': 'Guṇa Sandhi',
+            'guna_o': 'Guṇa Sandhi',
+            'dirgha_a': 'Savarna Dīrgha Sandhi',
+            'dirgha_i': 'Savarna Dīrgha Sandhi',
+            'dirgha_u': 'Savarna Dīrgha Sandhi',
+            'yan_y': 'Yaṇ Sandhi (vowel modification)',
+            'yan_v': 'Yaṇ Sandhi (vowel modification)',
+            'unknown': 'N/A'
+        };
+
+        /**
+         * Performs simplified reverse sandhi analysis on a single IAST token.
+         */
+        function performSandhiSegmentation(iastText) {
+            let results = [];
+            const text = iastText.toLowerCase().trim();
+            let analysisLog = ['[Analysis Mode] Starting Reverse Sandhi Segmentation.', `[Input] Raw IAST Token: ${text}`];
+
+            let found = false;
+            
+            // --- Define character sets to build safe Regex ---
+            const VOWELS_ALL = "aāiīuūṛṝḷḹeaiou"; 
+            const VOWELS_A = "aā";
+            const VOWELS_I = "iī";
+            const VOWELS_U = "uū";
+            const CONSONANTS_S = "śṣs";
+
+            // --- Rule 1: Visarga Sandhi (Sibilant to Visarga) ---
+            // e.g., rāmaśca -> rāmaḥ ca
+            try {
+                const visargaRegex = new RegExp(`^(.*[${VOWELS_ALL}])([${CONSONANTS_S}])(.*)$`);
+                const visargaMatch = text.match(visargaRegex);
+                
+                if (visargaMatch && !found) {
+                    analysisLog.push("[Check] Matched Visarga (sibilant) pattern.");
+                    const [, p1, sibilant, p2] = visargaMatch;
+                    
+                    if (p2.length > 0 && (
+                        (sibilant === 'ś' && (p2.startsWith('c') || p2.startsWith('ch'))) ||
+                        (sibilant === 'ṣ' && (p2.startsWith('ṭ') || p2.startsWith('ṭh'))) ||
+                        (sibilant === 's' && (p2.startsWith('t') || p2.startsWith('th')))
+                    )) {
+                        const proposal = `${p1}ḥ ${p2}`; // Add space for external sandhi
+                        analysisLog.push(`[Found] Visarga (Sibilant): ${text} -> ${proposal}`);
+                        results.push({ proposal: proposal, typeKey: "visarga_s", confidence: 0.92, log: analysisLog });
+                        found = true;
+                    } else {
+                         analysisLog.push("[Skip] Sibilant did not match following consonant.");
+                    }
+                }
+            } catch(e) { analysisLog.push(`[Error] Visarga Regex failed: ${e.message}`); }
+
+            // --- 7️⃣ FIX: Guna Sandhi (Medial 'e' or 'o') ---
+            // Guna 'e' -> a/ā + i/ī (e.g., maheśvara -> mahā + īśvara)
+            try {
+                // 7️⃣ FIX: Regex now splits at 'e' and proposes 'i/ī' for the second part.
+                const gunaERegex = new RegExp(`^(.*)e(.+)$`); 
+                const gunaEMatch = text.match(gunaERegex);
+                if (gunaEMatch && !found) {
+                    const [, p1, p2] = gunaEMatch;
+                    const proposal = `${p1}a/ā + i/ī${p2}`; // FIX
+                    analysisLog.push(`[Found] Guṇa (e): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "guna_e", confidence: 0.85, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Guna(e) Regex failed: ${e.message}`); }
+
+
+            // Guna 'o' -> a/ā + u/ū (e.g., mahotsava -> mahā + utsava)
+            try {
+                // 7️⃣ FIX: Regex now splits at 'o' and proposes 'u/ū' for the second part.
+                const gunaORegex = new RegExp(`^(.*)o(.+)$`);
+                const gunaOMatch = text.match(gunaORegex);
+                if (gunaOMatch && !found) {
+                    const [, p1, p2] = gunaOMatch;
+                    const proposal = `${p1}a/ā + u/ū${p2}`; // FIX
+                    analysisLog.push(`[Found] Guṇa (o): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "guna_o", confidence: 0.85, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Guna(o) Regex failed: ${e.message}`); }
+            
+            
+            // --- Rule 3: Dīrgha (Vowel Lengthening) Sandhi ---
+            // e.g., rāmālaya -> rāma + ālaya OR rāma + alaya
+            try {
+                // 7️⃣ FIX: Modified regex slightly to ensure second part starts with correct vowel class
+                const dirghaARegex = new RegExp(`^(.*)ā([${VOWELS_A}].*)$`); 
+                const dirghaAMatch = text.match(dirghaARegex);
+                 if (dirghaAMatch && !found) {
+                    const [, p1, p2] = dirghaAMatch;
+                    const proposal = `${p1}a/ā + ${p2}`;
+                    analysisLog.push(`[Found] Dīrgha (ā): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "dirgha_a", confidence: 0.80, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Dirgha(ā) Regex failed: ${e.message}`); }
+            
+            try {
+                const dirghaIRegex = new RegExp(`^(.*)ī([${VOWELS_I}].*)$`);
+                const dirghaIMatch = text.match(dirghaIRegex);
+                 if (dirghaIMatch && !found) {
+                    const [, p1, p2] = dirghaIMatch;
+                    const proposal = `${p1}i/ī + ${p2}`;
+                    analysisLog.push(`[Found] Dīrgha (ī): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "dirgha_i", confidence: 0.80, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Dirgha(ī) Regex failed: ${e.message}`); }
+            
+            try {
+                const dirghaURegex = new RegExp(`^(.*)ū([${VOWELS_U}].*)$`);
+                const dirghaUMatch = text.match(dirghaURegex);
+                 if (dirghaUMatch && !found) {
+                    const [, p1, p2] = dirghaUMatch;
+                    const proposal = `${p1}u/ū + ${p2}`;
+                    analysisLog.push(`[Found] Dīrgha (ū): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "dirgha_u", confidence: 0.80, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Dirgha(ū) Regex failed: ${e.message}`); }
+
+
+            // --- Rule 4: Yaṇ Sandhi (Internal) ---
+            // e.g., ityādi -> iti + ādi
+            try {
+                const yanYRegex = new RegExp(`^(.*)y([${VOWELS_ALL}].*)$`);
+                const yanYMatch = text.match(yanYRegex);
+                if (yanYMatch && !found) {
+                    const [, p1, p2] = yanYMatch;
+                    const proposal = `${p1}i/ī + ${p2}`;
+                    analysisLog.push(`[Found] Yaṇ (y): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "yan_y", confidence: 0.90, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Yan(y) Regex failed: ${e.message}`); }
+
+            // e.g., madhvāri -> madhu + āri
+            try {
+                const yanVRegex = new RegExp(`^(.*)v([${VOWELS_ALL}].*)$`);
+                const yanVMatch = text.match(yanVRegex);
+                if (yanVMatch && !found) {
+                    const [, p1, p2] = yanVMatch;
+                    const proposal = `${p1}u/ū + ${p2}`;
+                    analysisLog.push(`[Found] Yaṇ (v): ${text} -> ${proposal}`);
+                    results.push({ proposal: proposal, typeKey: "yan_v", confidence: 0.90, log: analysisLog });
+                    found = true;
+                }
+            } catch(e) { analysisLog.push(`[Error] Yan(v) Regex failed: ${e.message}`); }
+
+
+            // --- Final Output ---
+            if (results.length === 0) {
+                analysisLog.push("[Result] No recognized patterns found.");
+                results.push({ 
+                    proposal: "Could not analyze this word yet. Try simpler input.", 
+                    typeKey: "unknown", 
+                    confidence: 0, 
+                    log: analysisLog 
+                });
+            }
+
+            // Return the *first* match found
+            return results[0];
+        }
+
+
+        // --- UI and Controller Logic ---
+        
+        // Wrap all listeners inside a DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /**
+             * *** UNIVERSAL FIX: STABLE INITIALIZATION ***
+             * This function runs *after* the DOM is loaded and all const maps
+             * are guaranteed to be defined. It manually populates the Sets.
+             */
+            function initializeMaps() {
+                try {
+                    for (const key in DEV_CONSONANT_TO_IAST) {
+                        DEV_MAP_CONFIG.allConsonants.add(key);
+                    }
+                    for (const key in DEV_MATRA_TO_IAST) {
+                        DEV_MAP_CONFIG.allMatras.add(key);
+                    }
+                    for (const key in DEV_VOWEL_TO_IAST) {
+                        DEV_MAP_CONFIG.allVowels.add(key);
+                    }
+                    for (const key in DEV_OTHER_TO_IAST) {
+                        DEV_MAP_CONFIG.allOther.add(key);
+                    }
+
+                    for (const key in TEL_CONSONANT_TO_IAST) {
+                        TEL_MAP_CONFIG.allConsonants.add(key);
+                    }
+                    for (const key in TEL_MATRA_TO_IAST) {
+                        TEL_MAP_CONFIG.allMatras.add(key);
+                    }
+                    for (const key in TEL_VOWEL_TO_IAST) {
+                        TEL_MAP_CONFIG.allVowels.add(key);
+                    }
+                    for (const key in TEL_OTHER_TO_IAST) {
+                        TEL_MAP_CONFIG.allOther.add(key);
+                    }
+                    console.log("Lipisetu Maps Initialized. Devanagari Matras:", DEV_MAP_CONFIG.allMatras.size);
+                } catch (e) {
+                    console.error("CRITICAL ERROR: Failed to initialize maps.", e);
+                }
+            }
+            // Run the initialization immediately
+            initializeMaps();
+
+            // Get all elements *inside* the container
+            const app = document.getElementById('lipisetu-app-container');
+            if (!app) { 
+                console.error("Lipisetu App Container not found!");
+                return;
+            }
+
+            const inputTextarea = app.querySelector('#inputText');
+            const outputTextarea = app.querySelector('#outputText'); // This is a DIV
+            const englishWarningBox = app.querySelector('#englishWarningBox'); 
+            const logList = app.querySelector('#normalizationLog');
+            const toIASTButton = app.querySelector('#toIAST');
+            const toScriptButton = app.querySelector('#toScript');
+            const autoConvertButton = app.querySelector('#autoConvert');
+            const copyButton = app.querySelector('#copyButton'); // Legacy
+            const floatingCopyButton = app.querySelector('#floatingCopyBtn'); // New
+            const clearAllButton = app.querySelector('#clearAllButton'); 
+            const messageBox = document.getElementById('messageBox'); // This is outside the container
+            
+            const uploadButton = app.querySelector('#uploadButton');
+            const uploadInput = document.getElementById('uploadInput'); // This is outside
+            const downloadButton = app.querySelector('#downloadButton');
+            
+            // NEW: Mobile Toggles
+            const mobileToggleTransliteration = app.querySelector('#mobileToggleTransliteration');
+            const mobileToggleSandhi = app.querySelector('#mobileToggleSandhi');
+            const transliterationColumn = app.querySelector('#transliteration-column');
+            const sandhiColumn = app.querySelector('#sandhi-column');
+            
+            const transliterationPanel = app.querySelector('#transliterationPanel');
+            const sandhiAnalysisPanel = app.querySelector('#sandhiAnalysisPanel');
+            
+            const sandhiInput = app.querySelector('#sandhiInput');
+            const analyzeSandhiButton = app.querySelector('#analyzeSandhiButton');
+            const sandhiResultsDiv = app.querySelector('#sandhiResults');
+            const showSandhiLogBtn = app.querySelector('#showSandhiLogBtn');
+            const sandhiLogDiv = app.querySelector('#sandhiLog');
+            const sandhiLogPre = sandhiLogDiv.querySelector('pre');
+            
+            let currentMode = 'auto'; // Transliteration mode: 'auto', 'toIAST', or 'toScript'
+
+            function showMessage(text) {
+                messageBox.textContent = text;
+                messageBox.classList.add('show');
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, 2000);
+            }
+
+            function updateLog() {
+                if (!logList) return; // Failsafe
+                logList.innerHTML = '';
+                if (transformationLog.length === 0) {
+                    logList.innerHTML = '<li>No transformations or analyses performed yet.</li>';
+                    return;
+                }
+                transformationLog.forEach(logEntry => {
+                    const li = document.createElement('li');
+                    li.innerHTML = logEntry.replace(/\$/g, ''); // Use innerHTML to render $...$ and remove $
+                    logList.appendChild(li);
+                });
+            }
+
+            // Stricter HK/ITRANS detection
+            function isLikelyHK(input) {
+                 const trimmedInput = input.trim();
+                 if (trimmedInput.length === 0) return false;
+                 return /[AIURRLLGTDNJzS]/.test(trimmedInput) && !/^[A-Z][a-z]+$/.test(trimmedInput) && !IAST_SPECIFIC_REGEX.test(trimmedInput) && !isLikelyITRANS(trimmedInput);
+            }
+            
+            function isLikelyITRANS(input) {
+                 return /aa|ii|uu|R\^|Sh|ch|jn|M|H/i.test(input) && !IAST_SPECIFIC_REGEX.test(input);
+            }
+
+            /**
+             * 5️⃣, 8️⃣, BLOGGER FIX: Auto-detect function with corrected logic order
+             * This function now also sets the className and lang attribute.
+             */
+            function autoDetectAndConvert(input) {
+                transformationLog = []; // Clear log for auto-detect
+                let originalInput = input; 
+                if (originalInput.trim().length === 0) {
+                    setTransliterationMode('auto', false);
+                    return '';
+                }
+
+                const isDevanagari = DEVANAGARI_REGEX.test(originalInput);
+                const isTelugu = TELUGU_REGEX.test(originalInput); 
+                const isIAST = IAST_SPECIFIC_REGEX.test(originalInput);
+                const isITRANS = isLikelyITRANS(originalInput);
+                const isHK = isLikelyHK(originalInput);
+                const isEnglish = isLikelyEnglish(originalInput); // Check for English
+                
+                let output = '';
+                let iastInput = originalInput; // Default
+                
+                if (isDevanagari) {
+                    setTransliterationMode('toIAST', false);
+                    output = convertDevanagariToIAST(originalInput);
+                    outputTextarea.className = 'font-iast';
+                    outputTextarea.setAttribute('lang', 'en-US');
+                } else if (isTelugu) { 
+                    setTransliterationMode('toIAST', false);
+                    output = convertTeluguToIAST(originalInput);
+                    outputTextarea.className = 'font-iast';
+                    outputTextarea.setAttribute('lang', 'en-US');
+                } else if (isIAST) {
+                    setTransliterationMode('toScript', false);
+                    transformationLog.push('[Detection] Input recognized as IAST.');
+                    iastInput = originalInput; // Already IAST
+                    output = iastInput.split(' ').map(word => convertIASTToScript(word, currentOutputScript)).join(' ');
+                    outputTextarea.className = `font-${currentOutputScript}`;
+                    outputTextarea.setAttribute('lang', (currentOutputScript === 'telugu' ? 'te' : 'hi'));
+                } else if (isHK) {
+                    setTransliterationMode('toScript', false);
+                    iastInput = convertAsciiToIAST(originalInput, 'HK');
+                    output = iastInput.split(' ').map(word => convertIASTToScript(word, currentOutputScript)).join(' ');
+                    outputTextarea.className = `font-${currentOutputScript}`;
+                    outputTextarea.setAttribute('lang', (currentOutputScript === 'telugu' ? 'te' : 'hi'));
+                } else if (isITRANS) {
+                    setTransliterationMode('toScript', false);
+                    iastInput = convertAsciiToIAST(originalInput, 'ITRANS');
+                    output = iastInput.split(' ').map(word => convertIASTToScript(word, currentOutputScript)).join(' ');
+                    outputTextarea.className = `font-${currentOutputScript}`;
+                    outputTextarea.setAttribute('lang', (currentOutputScript === 'telugu' ? 'te' : 'hi'));
+                } else if (isEnglish) {
+                    setTransliterationMode('auto', false);
+                    transformationLog.push('[Detection] Likely English text. Passing through.');
+                    englishWarningBox.style.display = 'block';
+                    output = originalInput; // Pass through
+                    outputTextarea.className = 'font-iast'; // Use IAST/serif font for English
+                    outputTextarea.setAttribute('lang', 'en-US');
+                } else if (/[a-z]/i.test(originalInput)) { 
+                    setTransliterationMode('toScript', false);
+                    transformationLog.push('[Detection] Input recognized as Simple Roman. Applying heuristics...');
+                    iastInput = originalInput.split(' ').map(word => heuristicallyRomanToIAST(word)).join(' ');
+                    output = iastInput.split(' ').map(word => convertIASTToScript(word, currentOutputScript)).join(' ');
+                    outputTextarea.className = `font-${currentOutputScript}`;
+                    outputTextarea.setAttribute('lang', (currentOutputScript === 'telugu' ? 'te' : 'hi'));
+                    englishWarningBox.style.display = 'none';
+                } else {
+                    transformationLog.push('[Detection] Input is non-standard. Passing through.');
+                    output = originalInput;
+                    outputTextarea.className = '';
+                    outputTextarea.removeAttribute('lang');
+                    englishWarningBox.style.display = 'none';
+                }
+                
+                updateLog();
+                return output;
+            }
+
+            /**
+             * BLOGGER FIX: This function now *only* updates labels and lang attributes.
+             * The `className` is set by the function actually performing the conversion.
+             */
+            function updateLabels(mode) {
+                const inputLabel = app.querySelector('#inputLabel');
+                const outputLabel = app.querySelector('#outputLabel');
+
+                if (mode === 'toIAST') {
+                    inputLabel.textContent = 'Input (Devanagari / Telugu)';
+                    outputLabel.textContent = 'Output (IAST)';
+                    outputTextarea.setAttribute('lang', 'en-US'); // Set lang
+                } else if (mode === 'toScript') {
+                    const scriptName = currentOutputScript.charAt(0).toUpperCase() + currentOutputScript.slice(1);
+                    inputLabel.textContent = 'Input (IAST, HK, or ITRANS)';
+                    outputLabel.textContent = `Output (${scriptName})`;
+                    outputTextarea.setAttribute('lang', (currentOutputScript === 'telugu' ? 'te' : 'hi')); // Set lang
+                } else { // Auto
+                    inputLabel.textContent = 'Input (Auto Detect)';
+                    outputLabel.textContent = 'Output';
+                    outputTextarea.removeAttribute('lang'); // Clear lang
+                }
+            }
+
+
+            function setTransliterationMode(mode, updateUI = true) {
+                currentMode = mode;
+                
+                if (updateUI) {
+                    [toIASTButton, toScriptButton, autoConvertButton].forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline');
+                    });
+
+                    if (mode === 'toIAST') {
+                        toIASTButton.classList.add('btn-primary');
+                        toIASTButton.classList.remove('btn-outline');
+                    } else if (mode === 'toScript') {
+                        toScriptButton.classList.add('btn-primary');
+                        toScriptButton.classList.remove('btn-outline');
+                    } else {
+                        autoConvertButton.classList.add('btn-primary');
+                        autoConvertButton.classList.remove('btn-outline');
+                    }
+                }
+                updateLabels(mode);
+            }
+
+            /**
+             * Main conversion function
+             * BLOGGER FIX: Now sets className explicitly.
+             */
+            function performConversion() {
+                transformationLog = []; // Reset log
+                const input = inputTextarea.value;
+                let output = '';
+
+                // Hide warning by default
+                englishWarningBox.style.display = 'none';
+                
+                if (currentMode === 'toIAST') {
+                    // Auto-detect script for IAST conversion
+                    if (TELUGU_REGEX.test(input)) {
+                        output = convertTeluguToIAST(input);
+                    } else {
+                        // Default to Devanagari
+                        output = convertDevanagariToIAST(input);
+                    }
+                    outputTextarea.className = 'font-iast'; // Set class
+                    outputTextarea.setAttribute('lang', 'en-US'); // Set lang
+
+                } else if (currentMode === 'toScript') {
+                    let iastInput = input;
+                    const isIAST = IAST_SPECIFIC_REGEX.test(input);
+                    const isITRANS = isLikelyITRANS(input);
+                    const isHK = isLikelyHK(input);
+                    const isEnglish = isLikelyEnglish(input);
+
+                    if (isITRANS) {
+                         iastInput = convertAsciiToIAST(input, 'ITRANS');
+                    } else if (isHK) {
+                         iastInput = convertAsciiToIAST(input, 'HK');
+                    } else if (isIAST) {
+                        transformationLog.push('[Detection] Input recognized as IAST.');
+                    } else if (isEnglish) {
+                        transformationLog.push('[Detection] Likely English text. Passing through.');
+                        englishWarningBox.style.display = 'block';
+                    } else if (/[a-z]/i.test(input)) { 
+                        transformationLog.push('[Detection] Input recognized as Simple Roman. Applying heuristics...');
+                        iastInput = input.split(' ').map(word => heuristicallyRomanToIAST(word)).join(' ');
+                    } else {
+                        transformationLog.push('[Detection] Input assumed to be non-IAST/non-Devanagari text.');
+                    }
+                    
+                    if (isEnglish) {
+                        output = iastInput;
+                        outputTextarea.className = 'font-iast'; // Use serif font for English
+                        outputTextarea.setAttribute('lang', 'en-US');
+                    } else {
+                        output = iastInput.split(' ').map(word => convertIASTToScript(word, currentOutputScript)).join(' ');
+                        outputTextarea.className = `font-${currentOutputScript}`; // Set class
+                        outputTextarea.setAttribute('lang', (currentOutputScript === 'telugu' ? 'te' : 'hi'));
+                    }
+                
+                } else if (currentMode === 'auto') {
+                    // Auto-detect handles all logic, including setting class/lang
+                    output = autoDetectAndConvert(input);
+                }
+
+                outputTextarea.textContent = output; 
+                updateLog();
+            }
+            
+            /**
+             * BLOGGER FIX: Now resets className and lang.
+             */
+            function clearAll() { 
+                const initialText = outputTextarea.getAttribute('data-initial-text');
+                inputTextarea.value = '';
+                outputTextarea.textContent = initialText;
+                outputTextarea.className = ''; // Reset class
+                outputTextarea.removeAttribute('lang'); // Reset lang
+                englishWarningBox.style.display = 'none';
+                sandhiInput.value = '';
+                sandhiResultsDiv.innerHTML = 'Awaiting input...'; // Reset Sandhi UI
+                showSandhiLogBtn.classList.add('hidden');
+                sandhiLogDiv.classList.add('hidden');
+                transformationLog = ['System initialized.', 'Cleared all content.'];
+                setTransliterationMode('auto');
+                updateLog();
+                showMessage("Cleared all content and log.");
+                
+                // Reset mobile view if applicable
+                if (window.innerWidth < 900 && mobileToggleTransliteration) {
+                     // Use .style.display to ensure columns reset
+                    transliterationColumn.style.display = 'block';
+                    sandhiColumn.style.display = 'none';
+                    
+                    mobileToggleTransliteration.classList.add('btn-primary');
+                    mobileToggleTransliteration.classList.remove('btn-outline');
+                    
+                    mobileToggleSandhi.classList.add('btn-outline');
+                    mobileToggleSandhi.classList.remove('btn-primary');
+                }
+            }
+            
+            // --- Event Listeners ---
+            
+            const initialText = outputTextarea.getAttribute('data-initial-text');
+            outputTextarea.textContent = initialText;
+            
+            toIASTButton.innerHTML = '→ IAST';
+            toScriptButton.innerHTML = '→ Target Script';
+            analyzeSandhiButton.innerHTML = 'Analyze Sandhi →';
+
+            setTransliterationMode('auto');
+            updateLog(); // Initialize log
+
+            // --- NEW Mobile Toggle Listeners ---
+            if (mobileToggleTransliteration) {
+                mobileToggleTransliteration.addEventListener('click', () => {
+                    transliterationColumn.style.display = 'block';
+                    sandhiColumn.style.display = 'none';
+                    
+                    mobileToggleTransliteration.classList.add('btn-primary');
+                    mobileToggleTransliteration.classList.remove('btn-outline');
+                    
+                    mobileToggleSandhi.classList.add('btn-outline');
+                    mobileToggleSandhi.classList.remove('btn-primary');
+                });
+            }
+            
+            if (mobileToggleSandhi) {
+                mobileToggleSandhi.addEventListener('click', () => {
+                    transliterationColumn.style.display = 'none';
+                    sandhiColumn.style.display = 'block';
+                    
+                    mobileToggleSandhi.classList.add('btn-primary');
+                    mobileToggleSandhi.classList.remove('btn-outline');
+                    
+                    mobileToggleTransliteration.classList.add('btn-outline');
+                    mobileToggleTransliteration.classList.remove('btn-primary');
+                    
+                    // This is the sandhi analyzer, so clear log for analysis
+                    transformationLog = ['[Analysis Mode] Ready to perform Reverse Sandhi Segmentation.'];
+                    updateLog();
+                });
+            }
+
+
+            toIASTButton.addEventListener('click', () => { setTransliterationMode('toIAST'); performConversion(); });
+            toScriptButton.addEventListener('click', () => { setTransliterationMode('toScript'); performConversion(); });
+            autoConvertButton.addEventListener('click', () => { setTransliterationMode('auto'); performConversion(); });
+
+            inputTextarea.addEventListener('input', () => {
+                performConversion();
+            });
+
+            // Sandhi Button Click Handler
+            analyzeSandhiButton.addEventListener('click', () => {
+                console.log("Analyze Sandhi button clicked.");
+                // Clear old results
+                sandhiResultsDiv.innerHTML = 'Analyzing...';
+                showSandhiLogBtn.classList.add('hidden');
+                sandhiLogDiv.classList.add('hidden');
+                
+                try {
+                    const input = sandhiInput.value;
+                    if (input.trim()) {
+                        const analysis = performSandhiSegmentation(input);
+                        
+                        const readableType = readableSandhiType[analysis.typeKey] || analysis.typeKey;
+                        
+                        // Format the new output
+                        sandhiResultsDiv.innerHTML = `
+                            <div class="sandhi-proposal">${analysis.proposal}</div>
+                            <span class="sandhi-detail">Type: <strong>${readableType}</strong></span>
+                            <span class="sandhi-detail">Confidence: <strong>${(analysis.confidence * 100).toFixed(0)}%</strong></span>
+                        `;
+                        
+                        // Populate and show the log button
+                        sandhiLogPre.textContent = analysis.log.join('\n');
+                        showSandhiLogBtn.classList.remove('hidden');
+                        
+                        if (analysis.typeKey !== 'unknown') {
+                            showMessage("Sandhi analysis complete.");
+                        } else {
+                            showMessage("Analysis complete. No common sandhi found.");
+                        }
+                    } else {
+                        sandhiResultsDiv.innerHTML = 'Please enter a word in IAST format for analysis.';
+                    }
+                } catch (err) {
+                    console.error("Error during Sandhi analysis:", err);
+                    sandhiResultsDiv.textContent = 'An unexpected error occurred during analysis. Please check console.';
+                    showMessage("Analysis failed. See log for details.");
+                }
+            });
+            
+            showSandhiLogBtn.addEventListener('click', () => {
+                sandhiLogDiv.classList.toggle('hidden');
+                showSandhiLogBtn.textContent = sandhiLogDiv.classList.contains('hidden') ? 'Show Advanced Log (for researchers)' : 'Hide Advanced Log';
+            });
+
+            app.querySelectorAll('input[name="nasalMode"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    isSanskritMode = e.target.value === 'sanskrit';
+                    performConversion();
+                    showMessage(`Nasalization set to ${isSanskritMode ? 'Homorganic Nasals (Sanskrit Mode)' : 'Anusvāra Only (General Mode)'}.`);
+                });
+            });
+
+            app.querySelectorAll('input[name="outputScript"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    currentOutputScript = e.target.value;
+                    const scriptName = currentOutputScript.charAt(0).toUpperCase() + currentOutputScript.slice(1);
+                    toScriptButton.innerHTML = `→ ${scriptName}`; 
+                    setTransliterationMode(currentMode, true);
+                    performConversion();
+                    showMessage(`Output script set to ${scriptName}.`);
+                });
+            });
+
+            uploadButton.addEventListener('click', () => {
+                uploadInput.click();
+            });
+
+            uploadInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                if (file.type !== "text/plain") {
+                    showMessage("Error: Please upload a .txt file.");
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    inputTextarea.value = event.target.result;
+                    performConversion();
+                    showMessage("File loaded successfully.");
+                };
+                reader.onerror = () => { showMessage("Error reading file."); };
+                reader.readAsText(file);
+                e.target.value = null; 
+            });
+
+            downloadButton.addEventListener('click', () => {
+                const textToSave = outputTextarea.textContent;
+                if (!textToSave || textToSave === outputTextarea.getAttribute('data-initial-text')) {
+                    showMessage("Nothing to download.");
+                    return;
+                }
+                try {
+                    const blob = new Blob([textToSave], { type: 'text/plain;charset=utf-8' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'lipisetu_output.txt';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(a.href);
+                    showMessage("Download started...");
+                } catch (err) {
+                    showMessage("Error starting download.");
+                }
+            });
+            
+            // Shared Copy Logic
+            function copyOutputToClipboard() {
+                const output = outputTextarea.textContent;
+                if (output && output !== outputTextarea.getAttribute('data-initial-text')) {
+                    const tempInput = document.createElement('textarea');
+                    tempInput.value = output;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    try {
+                        document.execCommand('copy');
+                        showMessage("Output copied to clipboard!");
+                    } catch (err) {
+                        showMessage("Error copying: Please manually select and copy from the box.");
+                    } finally {
+                        document.body.removeChild(tempInput);
+                    }
+                } else {
+                    showMessage("Nothing to copy!");
+                }
+            }
+            
+            copyButton.addEventListener('click', copyOutputToClipboard);
+            floatingCopyButton.addEventListener('click', copyOutputToClipboard);
+            
+            clearAllButton.addEventListener('click', clearAll);
+            
+            // --- 10️⃣ Run Full Test Suite (Now with new state machine) ---
+            console.log("--- Running Lipisetu Test Suite (v1.5 - Stable Init) ---");
+            
+            console.log("Test 1 (Simple Roman): 'Narayana' -> 'devanagari'");
+            console.log("Expected: नारायण");
+            console.log("Actual:", autoDetectAndConvert("Narayana"));
+            
+            console.log("Test 2 (IAST): 'rāmaśca' -> 'devanagari'");
+            console.log("Expected: रामश्च");
+            console.log("Actual:", convertIASTToScript("rāmaśca", "devanagari"));
+
+            console.log("Test 3 (IAST): 'saṃskṛta' -> 'telugu'");
+            console.log("Expected: సంస్కృత");
+            console.log("Actual:", convertIASTToScript("saṃskṛta", "telugu"));
+            
+            console.log("Test 4 (Nukta): 'ज़' -> 'iast'");
+            console.log("Expected: z");
+            console.log("Actual:", convertDevanagariToIAST("ज़"));
+
+            console.log("Test 5 (Nukta): 'q' -> 'devanagari'");
+            console.log("Expected: क़");
+            console.log("Actual:", convertIASTToScript("q", "devanagari"));
+            
+            console.log("Test 6 (Telugu->IAST): 'నారాయణ' -> 'iast'");
+            console.log("Expected: nārāyaṇa");
+            console.log("Actual:", convertTeluguToIAST("నారాయణ"));
+
+            console.log("--- User Test Suite (Goal 10) ---");
+            
+            let testIn = "नारायणः जगतः नाथः अस्ति।";
+            let testOut = "nārāyaṇaḥ jagataḥ nāthaḥ asti.";
+            console.log(`Test: ${testIn}`);
+            console.log(`Expected: ${testOut}`);
+            console.log(`Actual: ${convertDevanagariToIAST(testIn)}`);
+
+            testIn = "धर्मः शान्तिं नयति।";
+            testOut = "dharmaḥ śāntiṃ nayati.";
+            console.log(`Test: ${testIn}`);
+            console.log(`Expected: ${testOut}`);
+            console.log(`Actual: ${convertDevanagariToIAST(testIn)}`);
+
+            testIn = "विष्णुः सर्वं व्याप्नोति।";
+            testOut = "viṣṇuḥ sarvaṃ vyāpnoti.";
+            console.log(`Test: ${testIn}`);
+            console.log(`Expected: ${testOut}`);
+            console.log(`Actual: ${convertDevanagariToIAST(testIn)}`);
+
+            testIn = "रामः सीतया सह वनं गतः।";
+            testOut = "rāmaḥ sītayā saha vanaṃ gataḥ.";
+            console.log(`Test: ${testIn}`);
+            console.log(`Expected: ${testOut}`);
+            console.log(`Actual: ${convertDevanagariToIAST(testIn)}`);
+
+            testIn = "गुरुः शिष्यं शिक्षयति।";
+            testOut = "guruḥ śiṣyaṃ śikṣayati.";
+            console.log(`Test: ${testIn}`);
+            console.log(`Expected: ${testOut}`);
+            console.log(`Actual: ${convertDevanagariToIAST(testIn)}`);
+            
+            testIn = "ब्रह्मा सृष्टिं करोति।";
+            testOut = "brahmā sṛṣṭiṃ karoti.";
+            console.log(`Test: ${testIn}`);
+            console.log(`Expected: ${testOut}`);
+            console.log(`Actual: ${convertDevanagariToIAST(testIn)}`);
+
+            console.log("--- Test Suite Complete ---");
+            
+        }); // <-- END OF DOMCONTENTLOADED
+    </script>
+</body>
+</html>
+
+
