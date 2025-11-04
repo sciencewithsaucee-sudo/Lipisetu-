@@ -15,6 +15,16 @@
          * conflicts with the parent website's theme (e.g., header/footer).
          * ===================================================================
          */
+
+        /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        /* --- END FIX --- */
+
         
         #lipisetu-app-container {
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -22,9 +32,12 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             line-height: 1.65;
-            /* REMOVED max-width: 1000px; for full-width design */
             margin: 0 auto;
             width: 100%;
+            /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
+            min-height: 100vh; /* Ensure it fills at least the viewport height */
+            padding-bottom: 2rem; /* Add some padding at the very bottom */
+            /* --- END FIX --- */
          }
         
         /* Stop prefixing here, apply to all children */
@@ -152,8 +165,10 @@
         /* On screens 900px and wider, use a 2-column layout */
         @media (min-width: 900px) { 
             #lipisetu-app-container .tool-grid {
-                /* Give more space to the main transliteration tool */
-                grid-template-columns: 1.2fr 0.8fr; 
+                /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
+                /* Give more space to the main transliteration tool, but allow flex */
+                grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); 
+                /* --- END FIX --- */
             }
         }
 
@@ -849,8 +864,8 @@ const MATRA_MAPS = {
                     <div class="creator-info">
                         <p>This tool was created and is maintained by <strong>Sparsh Varshney</strong>, a BAMS Student and Ayurvedic Researcher.</p>
                         <p>
-                            <strong>ORCID:</strong> <a href="https://orcid.org/0009-0004-7835-0673" target="_blank" rel="noopener">0009-0004-7835-0673</a><br>
-                            <strong>Website:</strong> <a href="https://www.amidhaayurveda.com/p/about.html" target="_blank" rel="noopener">Amidha Ayurveda</a><br>
+                            <strong>ORCID:</strong> <a href="https.orcid.org/0009-0004-7835-0673" target="_blank" rel="noopener">0009-0004-7835-0673</a><br>
+                            <strong>Website:</strong> <a href="https.www.amidhaayurveda.com/p/about.html" target="_blank" rel="noopener">Amidha Ayurveda</a><br>
                             <strong>GitHub:</strong> <a href="https://github.com/sciencewithsaucee-sudo" target="_blank" rel="noopener">sciencewithsaucee-sudo</a><br>
                             <strong>Contact:</strong> <a href="mailto:sparsh@amidhaayurveda.com">sparsh@amidhaayurveda.com</a>
                         </p>
@@ -2205,65 +2220,6 @@ const MATRA_MAPS = {
             
         }); // <-- END OF DOMCONTENTLOADED
     </script>
-   <script>
-      (function() {
-        var lastHeight = 0;
-        var newHeight = 0;
-        // Try for 10 seconds (20 * 500ms) to make sure parent gets message
-        var maxSends = 20; 
-        var sendCount = 0;
-
-        function sendHeight() {
-          // Get the total height of the document
-          newHeight = document.body.scrollHeight;
-
-          // Only send a message if the height has changed OR
-          // we are in the initial sending burst (sendCount < maxSends)
-          if (newHeight !== lastHeight || sendCount < maxSends) {
-            lastHeight = newHeight;
-            
-            // Send to any parent (Blogger will check origin)
-            window.parent.postMessage({
-              type: 'lipisetu-resize',
-              height: newHeight
-            }, '*'); 
-            
-            if (sendCount < maxSends) {
-              sendCount++;
-            }
-          }
-        }
-
-        // --- Aggressive Initial Send ---
-        // Send the height repeatedly for the first 10 seconds
-        // to ensure the parent listener catches it. This fixes the
-        // desktop race condition.
-        var intervalId = setInterval(function() {
-          sendHeight();
-          if (sendCount >= maxSends) {
-            clearInterval(intervalId); // Stop repeating after 10s
-          }
-        }, 500); // Send every 500ms
-
-        // --- Event-Based Send (for after initial load) ---
-        
-        // Send height on window resize (e.g., mobile rotation or desktop resize)
-        window.onresize = sendHeight;
-
-        // Also check height when user types, as it could cause reflow
-        const romanInput = document.getElementById('roman-input');
-        const devaInput = document.getElementById('deva-input');
-        
-        if (romanInput) romanInput.addEventListener('input', sendHeight);
-        if (devaInput) devaInput.addEventListener('input', sendHeight);
-        
-        // Also listen for clicks
-        document.body.addEventListener('click', function() {
-           setTimeout(sendHeight, 100);
-        });
-      })();
-    </script>
-
 </body>
 </html>
 
