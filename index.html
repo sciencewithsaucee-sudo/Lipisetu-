@@ -2205,6 +2205,46 @@ const MATRA_MAPS = {
             
         }); // <-- END OF DOMCONTENTLOADED
     </script>
+    <script>
+      function sendHeight() {
+        // Get the total height of the document
+        var height = document.body.scrollHeight;
+        
+        // Define the target origin (your Blogger page)
+        // For security, postMessage requires a target origin.
+        // Using '*' is insecure, but we don't know the Blogger URL.
+        // A better way is to send to the parent, whatever it is.
+        // The *receiving* page (Blogger) will check the origin.
+        window.parent.postMessage({
+          type: 'lipisetu-resize',
+          height: height
+        }, '*'); // Send to any parent
+      }
+
+      // Send height on initial load
+      window.onload = function() {
+        sendHeight();
+        
+        // Also send height if a textarea is resized (in case it grows)
+        // Or if the window itself is resized (mobile orientation change)
+        const romanInput = document.getElementById('roman-input');
+        const devaInput = document.getElementById('deva-input');
+        
+        if (romanInput) romanInput.addEventListener('input', sendHeight);
+        if (devaInput) devaInput.addEventListener('input', sendHeight);
+      };
+
+      // Send height on window resize (e.g., mobile rotation)
+      window.onresize = sendHeight;
+
+      // Also listen for clicks, as they might reveal content
+      // (though not in this app, it's good practice)
+      document.body.addEventListener('click', function() {
+         // Use a small delay to allow UI to update before measuring
+         setTimeout(sendHeight, 100);
+      });
+
+    </script>
 </body>
 </html>
 
