@@ -17,38 +17,36 @@
          */
 
         /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow-y: hidden;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-        }
-        /* --- END FIX --- */
+       html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* 1. MANDATORY: Fill the full vertical space of the iframe */
+    height: 100%; 
+    /* 2. MANDATORY: Prevent any vertical or horizontal scrollbars within the tool itself */
+    overflow: hidden; 
+}
+/* --- END FIX --- */
 
-        
-        #lipisetu-app-container {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            color: #374151; /* var(--color-text-body) */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            line-height: 1.65;
-            height: 100%;
-            margin: 0 auto;
-            width: 100%;
-            /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
-            /* REMOVED min-height: 100vh; This was conflicting with the iframe embed height. */
-            padding-bottom: 2rem; /* Add some padding at the very bottom */
-            /* --- END FIX --- */
-         }
-        
-        /* Stop prefixing here, apply to all children */
-        #lipisetu-app-container *, 
-        #lipisetu-app-container *::before, 
-        #lipisetu-app-container *::after { 
-            box-sizing: border-box; 
-        }
+#lipisetu-app-container {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    color: #374151; /* var(--color-text-body) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.65;
+    margin: 0 auto;
+    width: 100%;
+    /* 3. MANDATORY: Fill the full vertical space of the body */
+    height: 100%; 
+    /* REMOVED: padding-bottom: 2rem; - Adding padding here causes overflow when height is 100% */
+}
+
+/* Stop prefixing here, apply to all children */
+#lipisetu-app-container *, 
+#lipisetu-app-container *::before, 
+#lipisetu-app-container *::after { 
+    box-sizing: border-box; 
+}
 
         :root {
             /* Keep CSS variables defined, but they are localized by the container */
