@@ -1,11 +1,11 @@
 /*
- * Lipisetu (लिपिसेतु) v1.5.2
+ * Lipisetu (लिपिसेतु) v1.5.3
  * The Smart Sanskrit Transliteration & Analysis Tool
  * * This file contains the complete, self-contained logic for the
  * Lipisetu application. It is designed to be loaded by an HTML
  * file and run entirely in the client.
  * * @author Sparsh Varshney, with contributions from Gemini
- * @version 1.5.2
+ * @version 1.5.3
  */
 
 // --- ENCAPSULATION WRAPPER ---
@@ -603,6 +603,8 @@
     const VOWELS_O = "oau"; // o, au
     const CONSONANTS_S = "śṣs";
     const CONSONANTS_VOICED = "gghjbḍdhjñdhnvlmry"; // Voiced consonants
+    // ✅ NEW: Unvoiced consonants to prevent rule collision
+    const CONSONANTS_UNVOICED = "kkhcchṭṭhptśṣs"; 
 
     /**
      * Performs reverse sandhi analysis on a single IAST token.
@@ -655,8 +657,9 @@
 
         // Guna 'o' -> a/ā + u/ū (e.g., mahotsava -> mahā + utsava)
         try {
-            // ✅ FIX: Simplified regex, fixed proposal logic
-            const gunaORegex = new RegExp(`^(.*)o(.+)$`);
+            // ✅ FIX: Regex now *only* matches 'o' followed by an UNVOICED consonant
+            // This prevents it from matching Visarga Sandhi cases like 'manorathaḥ'
+            const gunaORegex = new RegExp(`^(.*)o([${CONSONANTS_UNVOICED}].*)$`);
             const gunaOMatch = text.match(gunaORegex);
             if (gunaOMatch) {
                 const [, p1, p2] = gunaOMatch;
