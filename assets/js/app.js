@@ -1,11 +1,11 @@
 /*
- * Lipisetu (लिपिसेतु) v1.5.1
+ * Lipisetu (लिपिसेतु) v1.5.2
  * The Smart Sanskrit Transliteration & Analysis Tool
  * * This file contains the complete, self-contained logic for the
  * Lipisetu application. It is designed to be loaded by an HTML
  * file and run entirely in the client.
  * * @author Sparsh Varshney, with contributions from Gemini
- * @version 1.5.1
+ * @version 1.5.2
  */
 
 // --- ENCAPSULATION WRAPPER ---
@@ -640,13 +640,13 @@
         // --- Rule 2: Guna Sandhi (Medial 'e' or 'o') ---
         // Guna 'e' -> a/ā + i/ī (e.g., maheśvara -> mahā + īśvara)
         try {
-            const gunaERegex = new RegExp(`^(.*[${VOWELS_A}])e(.+)$`); 
+            // ✅ FIX: Simplified regex, fixed proposal logic
+            const gunaERegex = new RegExp(`^(.*)e(.+)$`); 
             const gunaEMatch = text.match(gunaERegex);
             if (gunaEMatch) {
                 const [, p1, p2] = gunaEMatch;
-                // Propose split: remove 'e' from p1, add i/ī to p2
-                const p1_clean = p1.slice(0, -1); // remove the a/ā
-                const proposal = `${p1_clean}a/ā + i/ī${p2}`;
+                // Proposal: p1 ends in consonant, needs a/ā. p2 needs i/ī
+                const proposal = `${p1}a/ā + i/ī${p2}`;
                 analysisLog.push(`[Found] Guṇa (e): ${text} -> ${proposal}`);
                 results.push({ proposal: proposal, typeKey: "guna_e", confidence: 0.85, log: analysisLog });
             }
@@ -655,12 +655,13 @@
 
         // Guna 'o' -> a/ā + u/ū (e.g., mahotsava -> mahā + utsava)
         try {
-            const gunaORegex = new RegExp(`^(.*[${VOWELS_A}])o(.+)$`);
+            // ✅ FIX: Simplified regex, fixed proposal logic
+            const gunaORegex = new RegExp(`^(.*)o(.+)$`);
             const gunaOMatch = text.match(gunaORegex);
             if (gunaOMatch) {
                 const [, p1, p2] = gunaOMatch;
-                const p1_clean = p1.slice(0, -1); // remove the a/ā
-                const proposal = `${p1_clean}a/ā + u/ū${p2}`;
+                // Proposal: p1 ends in consonant, needs a/ā. p2 needs u/ū
+                const proposal = `${p1}a/ā + u/ū${p2}`;
                 analysisLog.push(`[Found] Guṇa (o): ${text} -> ${proposal}`);
                 results.push({ proposal: proposal, typeKey: "guna_o", confidence: 0.85, log: analysisLog });
             }
@@ -730,12 +731,12 @@
         // --- NEW Rule 5: Vṛddhi Sandhi ---
         // e.g., ekaikam -> eka + ekam (a/ā + e/ai -> ai)
         try {
-            const vrddhiAiRegex = new RegExp(`^(.*[${VOWELS_A}])ai(.+)$`);
+            // ✅ FIX: Simplified regex, fixed proposal logic
+            const vrddhiAiRegex = new RegExp(`^(.*)ai(.+)$`);
             const vrddhiAiMatch = text.match(vrddhiAiRegex);
             if (vrddhiAiMatch) {
                 const [, p1, p2] = vrddhiAiMatch;
-                const p1_clean = p1.slice(0, -1); // remove the a/ā
-                const proposal = `${p1_clean}a/ā + ${VOWELS_E}${p2}`; // Propose e... or ai...
+                const proposal = `${p1}a/ā + e/ai${p2}`; // Propose e... or ai...
                 analysisLog.push(`[Found] Vṛddhi (ai): ${text} -> ${proposal}`);
                 results.push({ proposal: proposal, typeKey: "vrddhi_ai", confidence: 0.88, log: analysisLog });
             }
@@ -743,12 +744,12 @@
 
         // e.g., gangaughaḥ -> gangā + oghaḥ (a/ā + o/au -> au)
         try {
-            const vrddhiAuRegex = new RegExp(`^(.*[${VOWELS_A}])au(.+)$`);
+            // ✅ FIX: Simplified regex, fixed proposal logic
+            const vrddhiAuRegex = new RegExp(`^(.*)au(.+)$`);
             const vrddhiAuMatch = text.match(vrddhiAuRegex);
             if (vrddhiAuMatch) {
                 const [, p1, p2] = vrddhiAuMatch;
-                const p1_clean = p1.slice(0, -1); // remove the a/ā
-                const proposal = `${p1_clean}a/ā + ${VOWELS_O}${p2}`; // Propose o... or au...
+                const proposal = `${p1}a/ā + o/au${p2}`; // Propose o... or au...
                 analysisLog.push(`[Found] Vṛddhi (au): ${text} -> ${proposal}`);
                 results.push({ proposal: proposal, typeKey: "vrddhi_au", confidence: 0.88, log: analysisLog });
             }
