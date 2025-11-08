@@ -1,0 +1,634 @@
+  /* * ===================================================================
+         * CSS ENCAPSULATION
+         * All rules are prefixed with #lipisetu-app-container to prevent
+         * conflicts with the parent website's theme (e.g., header/footer).
+         * ===================================================================
+         */
+
+        /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
+       html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* 1. MANDATORY: Fill the full vertical space of the iframe */
+    /* 2. MANDATORY: Prevent any vertical or horizontal scrollbars within the tool itself */
+}
+/* --- END FIX --- */
+
+#lipisetu-app-container {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    color: #374151; /* var(--color-text-body) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.65;
+    margin: 0 auto;
+    width: 100%;
+    /* 3. MANDATORY: Fill the full vertical space of the body */
+    height: 100%; 
+    /* REMOVED: padding-bottom: 2rem; - Adding padding here causes overflow when height is 100% */
+}
+
+/* Stop prefixing here, apply to all children */
+#lipisetu-app-container *, 
+#lipisetu-app-container *::before, 
+#lipisetu-app-container *::after { 
+    box-sizing: border-box; 
+}
+
+        :root {
+            /* Keep CSS variables defined, but they are localized by the container */
+            --color-primary: #006400; /* Dark Green (from ShlokaAI) */
+            --color-primary-dark: #004d00;
+            --color-secondary: #1E40AF; /* Blue (from ShlokaAI) */
+            --color-secondary-dark: #1e3a8a; /* Darker blue */
+            --color-danger: #B91C1C; /* Red (from ShlokaAI) */
+            --color-danger-dark: #991B1B; /* Darker red */
+            --color-neutral: #6B7280; /* Medium Gray (from ShlokaAI) */
+            --color-neutral-dark: #4B5563;
+            --color-text-dark: #111827; /* Near Black */
+            --color-text-body: #374151; /* Dark Gray */
+            --color-text-light: #6B7280; /* Medium Gray */
+            --color-bg-light: #f9fafb; /* Very Light Gray */
+            --color-bg-white: #ffffff;
+            --color-border: #e5e7eb; /* Light Gray Border */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            /* Specific to Lipisetu log */
+            --log-bg: #FFF3E0; 
+            --log-border: #FFCC80;
+        }
+
+        /* --- NEW Hero Section --- */
+        #lipisetu-app-container .hero-section {
+            display: flex; align-items: center; text-align: center;
+            padding: 3rem 1rem;
+            background-color: #e8f5e9; /* Light green */
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+            position: relative; /* For version label */
+           }
+        
+        /* NEW: Version Label */
+         #lipisetu-app-container .version-label {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             background-color: rgba(0, 100, 0, 0.1);
+             color: var(--color-primary-dark);
+             font-size: 0.75rem;
+             font-weight: 600;
+             padding: 3px 8px;
+             border-radius: var(--radius-md);
+             border: 1px solid rgba(0, 100, 0, 0.2);
+           }
+        
+         #lipisetu-app-container .hero-content {
+             max-width: 800px;
+             margin: 0 auto;
+             padding: 0 1rem;
+           }
+         #lipisetu-app-container .hero-content h1 {
+             font-size: clamp(2rem, 5vw, 2.8rem);
+             color: var(--color-text-dark);
+             font-weight: 700; margin: 0 0 1rem 0; line-height: 1.25;
+             border: none; padding: 0;
+           }
+         #lipisetu-app-container .hero-content p {
+             font-size: 1.15rem; font-weight: 400; color: var(--color-text-body);
+             margin: 0 0 1.75rem 0;
+           }
+         #lipisetu-app-container .hero-buttons {
+             display: flex;
+             gap: 1rem;
+             justify-content: center;
+             flex-wrap: wrap;
+           }
+
+        /* --- 3️⃣ CSS FIX: "How to Use" Button Style --- */
+        #lipisetu-app-container button.how-to-use-btn,
+        #lipisetu-app-container #howToUseBtn {
+          background-color: #ffffff !important;
+          color: #006400 !important;
+          border: 2px solid #006400 !important;
+          font-weight: 600;
+          padding: 8px 16px;
+          border-radius: 6px;
+          transition: all 0.2s ease-in-out;
+          /* Ensure btn defaults are overridden if needed */
+          max-width: 250px;
+          flex-grow: 1;
+        }
+        #lipisetu-app-container button.how-to-use-btn:hover,
+        #lipisetu-app-container #howToUseBtn:hover {
+          background-color: #006400 !important;
+          color: #ffffff !important;
+        }
+        
+        /* --- NEW Mobile Toggle Buttons --- */
+        #lipisetu-app-container .mobile-toggle-buttons {
+            display: none; /* Hidden by default on desktop */
+            width: 100%;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+        #lipisetu-app-container .mobile-toggle-buttons .btn {
+            flex-grow: 1;
+            max-width: 50%;
+        }
+        
+        /* --- NEW Tool Grid Layout --- */
+        #lipisetu-app-container .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile-first: single column */
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* On screens 900px and wider, use a 2-column layout */
+        @media (min-width: 900px) { 
+            #lipisetu-app-container .tool-grid {
+                /* --- GITHUB/BLOGGER RESPONSIVE FIX --- */
+                /* Give more space to the main transliteration tool, but allow flex */
+                grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); 
+                /* --- END FIX --- */
+            }
+        }
+
+        /* --- NEW Mobile Stacking/Toggling Logic --- */
+        @media (max-width: 899px) {
+            /* Show the toggle buttons */
+            #lipisetu-app-container .mobile-toggle-buttons {
+                display: flex;
+            }
+            
+            /* Hide the grid margin, buttons have it */
+            #lipisetu-app-container .tool-grid {
+                margin-top: 1rem;
+            }
+        
+            /* Hide Sandhi column by default on mobile */
+            #lipisetu-app-container #sandhi-column {
+                display: none;
+            }
+        }
+        
+        #lipisetu-app-container .tool-column .card {
+            margin-top: 0; /* Grid gap handles spacing */
+            height: 100%; /* Make cards in grid equal height */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #lipisetu-app-container .tool-column .card-body {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Make card body fill height */
+        }
+        
+        /* Card Layout */
+        #lipisetu-app-container .card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-top: 1.5rem;
+        }
+        #lipisetu-app-container .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        /* Make tool headers smaller */
+        #lipisetu-app-container .card-header h2 {
+            font-size: 1.5rem;
+            color: var(--color-text-dark);
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.25;
+            text-align: left;
+            border: none;
+            padding: 0;
+        }
+        #lipisetu-app-container .card-header p {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--color-text-light);
+            margin: 0;
+            text-align: left;
+            margin-top: 5px;
+        }
+        #lipisetu-app-container .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Form Elements */
+        #lipisetu-app-container textarea, 
+        #lipisetu-app-container #outputText {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 1rem; /* Normalized font size */
+            box-sizing: border-box;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        #lipisetu-app-container textarea:focus, 
+        #lipisetu-app-container #outputText:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(0,100,0,0.15);
+        }
+        
+        /* --- 4️⃣ Enhancement: Output Container & Floating Button --- */
+        #lipisetu-app-container #outputTextContainer {
+            position: relative;
+        }
+        #lipisetu-app-container #floatingCopyBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            max-width: 80px; /* override btn defaults */
+            flex-grow: 0;
+            background-color: var(--color-neutral);
+            border-color: var(--color-neutral);
+        }
+         #lipisetu-app-container #floatingCopyBtn:hover:not(:disabled) {
+            background-color: var(--color-neutral-dark);
+            border-color: var(--color-neutral-dark);
+           }
+        
+        #lipisetu-app-container #outputText {
+            background-color: #f1f1f1;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+        #lipisetu-app-container textarea {
+             background-color: white;
+             /* margin-bottom: 20px; <-- REMOVED, margin is on info box now */
+        }
+        
+        /* --- 5️⃣ NEW: English Warning Info Box --- */
+        #lipisetu-app-container #englishWarningBox {
+            display: none; /* Hidden by default */
+            font-size: 0.85rem;
+            color: var(--color-text-dark);
+            background-color: #FFFBEB; /* Light yellow */
+            border: 1px solid #FDE68A; /* Yellow border */
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+        #lipisetu-app-container #englishWarningBox strong {
+            color: #B45309; /* Dark yellow/brown */
+        }
+
+        /* --- NEW Label Group for Upload Button --- */
+        #lipisetu-app-container .label-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        #lipisetu-app-container .label-group label.area-label {
+            margin-bottom: 0; /* Remove bottom margin from label */
+        }
+        /* Style the upload button to be small and discrete */
+        #lipisetu-app-container .label-group #uploadButton {
+            flex-grow: 0; /* Don't grow */
+            max-width: none;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            /* Use secondary style for file operations */
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: #ffffff;
+        }
+        #lipisetu-app-container .label-group #uploadButton:hover:not(:disabled) {
+            background-color: var(--color-secondary-dark);
+            border-color: var(--color-secondary-dark);
+        }
+
+        #lipisetu-app-container label.area-label {
+            display: block;
+            font-weight: 500;
+            color: var(--color-text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Font Classes for Output */
+        #lipisetu-app-container .font-devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+        #lipisetu-app-container .font-telugu { font-family: 'Noto Sans Telugu', sans-serif; /* Specify Telugu font */ }
+        /* BLOGGER FIX: Use a classic serif font for IAST to improve diacritic rendering and copy-paste */
+        #lipisetu-app-container .font-iast { 
+            font-family: 'Times New Roman', Times, serif; 
+            font-size: 1.1rem; /* Make it slightly larger */
+        }
+
+        /* Button System */
+        #lipisetu-app-container .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+            flex-grow: 1; /* For button groups */
+            max-width: 250px; /* For button groups */
+        }
+        #lipisetu-app-container .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        #lipisetu-app-container .btn:disabled {
+            background: #D1D5DB; color: var(--color-text-light);
+            cursor: not-allowed; transform: none; box-shadow: none;
+        }
+        #lipisetu-app-container .btn-primary { background: var(--color-primary); border-color: var(--color-primary); color: #ffffff; }
+        #lipisetu-app-container .btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); border-color: var(--color-primary-dark); }
+        #lipisetu-app-container .btn-secondary { background: var(--color-secondary); border-color: var(--color-secondary); color: #ffffff; }
+        #lipisetu-app-container .btn-secondary:hover:not(:disabled) { background: var(--color-secondary-dark); border-color: var(--color-secondary-dark); }
+        #lipisetu-app-container .btn-danger { background: var(--color-danger); border-color: var(--color-danger); color: #ffffff; }
+        #lipisetu-app-container .btn-danger:hover:not(:disabled) { background: var(--color-danger-dark); border-color: var(--color-danger-dark); }
+        #lipisetu-app-container .btn-neutral { background: var(--color-neutral); border-color: var(--color-neutral); color: #ffffff; }
+        #lipisetu-app-container .btn-neutral:hover:not(:disabled) { background: var(--color-neutral-dark); border-color: var(--color-neutral-dark); }
+        
+        #lipisetu-app-container .btn-outline {
+            background: var(--color-bg-white);
+            color: var(--color-primary); /* Green text for outline */
+            border-color: var(--color-primary); /* Green border */
+        }
+        #lipisetu-app-container .btn-outline:hover:not(:disabled) {
+            background: #f0fdf4; /* Light green hover */
+            border-color: var(--color-primary-dark);
+            color: var(--color-primary-dark);
+        }
+
+        #lipisetu-app-container .button-group { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Restyled Radio/Control Group */
+        #lipisetu-app-container .mode-control-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 20px;
+            padding: 1rem;
+            background-color: var(--color-bg-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        
+        @media (min-width: 768px) {
+             #lipisetu-app-container .mode-control-group {
+                  grid-template-columns: 1fr 1fr;
+                  gap: 2rem;
+                  padding: 1.5rem;
+             }
+        }
+        
+        /* On mobile, stack the controls */
+        @media (max-width: 480px) {
+             #lipisetu-app-container .mode-control-group {
+                  grid-template-columns: 1fr;
+             }
+        }
+
+
+        #lipisetu-app-container .control-label {
+            font-weight: 600;
+            color: var(--color-text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        #lipisetu-app-container .radio-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        #lipisetu-app-container .radio-label {
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+            color: var(--color-text-body);
+        }
+        #lipisetu-app-container .radio-label input {
+            margin-right: 8px;
+            accent-color: var(--color-primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* --- 2️⃣ Sandhi Panel (Upgraded) --- */
+        #lipisetu-app-container #sandhiResults {
+            font-size: 1.0rem; /* Slightly smaller */
+            font-weight: 500; /* Normal weight */
+            color: var(--color-text-dark);
+            min-height: 40px;
+            padding: 10px;
+            border: 1px dashed var(--color-neutral);
+            border-radius: var(--radius-md);
+            white-space: pre-wrap;
+            background-color: var(--color-bg-light);
+            /* Make it grow to fill space */
+            flex-grow: 1;
+        }
+        /* New styles for formatted Sandhi output */
+        #lipisetu-app-container #sandhiResults .sandhi-proposal {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+         #lipisetu-app-container #sandhiResults .sandhi-detail {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            display: block;
+            margin-top: 4px;
+           }
+        
+        #lipisetu-app-container #showSandhiLogBtn {
+            flex-grow: 0;
+            max-width: 250px; /* Widen to fit new text */
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        #lipisetu-app-container #sandhiLog {
+            margin-top: 10px;
+            border-top: 1px dashed var(--color-border);
+            padding-top: 10px;
+        }
+        #lipisetu-app-container #sandhiLog pre {
+            background-color: var(--color-bg-light);
+             border: 1px solid var(--color-border);
+             border-radius: var(--radius-md);
+             padding: 1rem;
+             overflow-x: auto;
+             font-family: monospace;
+             font-size: 0.85rem;
+             max-height: 150px;
+             overflow-y: auto;
+        }
+
+        
+        /* Make sandhi textarea also grow */
+        #lipisetu-app-container #sandhiInput {
+            flex-grow: 1;
+            min-height: 150px;
+        }
+
+        /* Log Panel */
+        #lipisetu-app-container #logPanel {
+            background-color: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+        }
+        #lipisetu-app-container #logPanel h3 {
+            color: var(--color-text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        #lipisetu-app-container #normalizationLog {
+            font-size: 0.85rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #34495E;
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: var(--color-bg-light);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        #lipisetu-app-container #normalizationLog li {
+            list-style-type: none;
+            margin-bottom: 3px;
+        }
+        
+        /* Message Box */
+        /* Positioned relative to viewport, so no prefix */
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-primary); /* Use theme color */
+            color: white;
+            padding: 12px 22px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1000;
+            font-weight: 500;
+        }
+        .message-box.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        #lipisetu-app-container .hidden {
+            display: none;
+        }
+
+        /* --- NEW Info Section Styles --- */
+         #lipisetu-app-container .info-card-body {
+             padding: 1.5rem;
+           }
+         #lipisetu-app-container .info-card-body h2 {
+             font-size: 1.5rem;
+             font-weight: 600;
+             color: var(--color-text-dark);
+             border-bottom: 1px solid var(--color-border);
+             padding-bottom: 0.75rem;
+             margin-top: 0;
+             margin-bottom: 1rem;
+           }
+         #lipisetu-app-container .info-card-body h3 {
+              font-size: 1.1rem;
+              font-weight: 600;
+              color: var(--color-text-dark);
+              border-bottom: none;
+              margin-top: 1.5rem;
+              margin-bottom: 0.5rem;
+           }
+         #lipisetu-app-container .info-card-body p, 
+         #lipisetu-app-container .info-card-body li {
+             font-size: 1rem;
+             line-height: 1.7;
+             color: var(--color-text-body);
+             word-break: break-word;
+           }
+         #lipisetu-app-container .info-card-body ol, 
+         #lipisetu-app-container .info-card-body ul {
+             padding-left: 1.5rem;
+             margin-left: 0;
+           }
+         #lipisetu-app-container .info-card-body li {
+             margin-bottom: 0.5rem;
+           }
+         #lipisetu-app-container .info-card-body a {
+             color: var(--color-primary);
+             text-decoration: none;
+             font-weight: 500;
+             transition: color 0.2s;
+           }
+         #lipisetu-app-container .info-card-body a:hover {
+             color: var(--color-primary-dark);
+             text-decoration: underline;
+           }
+         /* Code block for example */
+         #lipisetu-app-container pre {
+              background-color: var(--color-bg-light);
+              border: 1px solid var(--color-border);
+              border-radius: var(--radius-md);
+              padding: 1rem;
+              overflow-x: auto;
+              font-family: monospace;
+              font-size: 0.85rem;
+           }
+         #lipisetu-app-container .creator-info {
+             background-color: var(--color-bg-light);
+             padding: 1.5rem;
+             border-radius: var(--radius-md);
+             border: 1px solid var(--color-border);
+           }
+         #lipisetu-app-container .creator-info p {
+             margin: 0.5rem 0;
+           }
